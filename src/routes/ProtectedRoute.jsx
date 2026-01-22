@@ -1,9 +1,24 @@
-import React from 'react'
+import { useSelector } from "react-redux";
+import { Outlet, Navigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
-function ProtectedRoute() {
-  return (
-    <div>ProtectedRoute</div>
-  )
+function ProtectedRoute({ allowedRoles }) {
+
+  const { isAuthenticated, user, sessionChecked, loading } = useSelector(state => state.auth);
+
+  if ((!sessionChecked && user) || loading) {
+    return (
+      <div className="w-full h-screen items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !allowedRoles.includes(user?.role)) {
+    return <Navigate to={'/'} />
+  }
+
+  return <Outlet />;
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;
