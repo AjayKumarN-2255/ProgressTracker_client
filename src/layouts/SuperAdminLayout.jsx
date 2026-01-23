@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom';
-// import SuperHeader from '../components/SuperHeader';
-// import SuperSidebar from '../components/SuperSidebar';
+import SuperHeader from '../features/superadmin/components/Header';
+import SuperSidebar from '../features/superadmin/components/Sidebar';
 
 function SuperAdminLayout() {
     return (
         <div className="h-screen flex flex-col w-screen font-custom">
-            {/* <SuperHeader /> */}
+            <SuperHeader />
             <div className='w-full h-[calc(100vh-80px)] flex flex-col md:flex-row'>
                 <div className='md:w-60 lg:w-72 h-fit md:h-full'>
-                    {/* <SuperSidebar /> */}
+                    <SuperSidebar />
                 </div>
                 <div className='flex-1 bg-gray-100 md:h-full p-4 md:p-10'>
                     <Outlet />

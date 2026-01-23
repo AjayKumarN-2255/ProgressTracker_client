@@ -5,6 +5,11 @@ import useAuthRefresh from './hooks/useAuthRefresh';
 
 import LoginPage from './features/auth/pages/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute';
+import AddEmployee from './features/users/pages/AddEmployee';
+import AddAdmin from './features/users/pages/AddAdmin';
+
+import AddProject from './features/project/pages/AddProject';
+import AddReport from './features/report/pages/AddReport';
 
 import UserLayout from './layouts/UserLayout';
 import EmployeeDashboard from './features/employee/pages/Dashboard';
@@ -19,7 +24,7 @@ import SuperDashboard from './features/superadmin/pages/Dashboard';
 function App() {
 
   useAuthRefresh();
-  
+
   const router = createBrowserRouter([
     { path: '/', element: <LoginPage /> },
     {
@@ -42,6 +47,9 @@ function App() {
           element: <AdminLayout />,   // layout wraps all admin pages
           children: [
             { path: 'dashboard', element: <AdminDashboard /> },
+            { path: 'add-employee', element: <AddEmployee /> },
+            { path: 'add-project', element: <AddProject /> },
+            { path: 'add-report', element: <AddReport /> },
           ]
         }
       ]
@@ -54,6 +62,10 @@ function App() {
           element: <SuperAdminLayout />, // layout wraps all superadmin pages
           children: [
             { path: 'dashboard', element: <SuperDashboard /> },
+            { path: 'add-admin', element: <AddAdmin /> },
+            { path: 'add-employee', element: <AddEmployee /> },
+            { path: 'add-project', element: <AddProject /> },
+            { path: 'add-report', element: <AddReport /> },
           ]
         }
       ]
