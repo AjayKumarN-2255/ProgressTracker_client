@@ -7,6 +7,7 @@ import LoginPage from './features/auth/pages/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AddEmployee from './features/users/pages/AddEmployee';
 import AddAdmin from './features/users/pages/AddAdmin';
+import Page404 from './components/Page404';
 
 import AddProject from './features/project/pages/AddProject';
 import AddReport from './features/report/pages/AddReport';
@@ -26,7 +27,7 @@ function App() {
   useAuthRefresh();
 
   const router = createBrowserRouter([
-    { path: '/', element: <LoginPage /> },
+    { path: '/', element: <LoginPage />, errorElement: <Page404 /> },
     {
       path: '/employee',
       element: <ProtectedRoute allowedRoles={['employee']} />, // checks auth
