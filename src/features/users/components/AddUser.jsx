@@ -7,8 +7,13 @@ import { useEffect } from "react";
 function AddUser({ role, designation }) {
 
     const { register, reset, handleSubmit, formState: { errors } } = useForm();
-    const { handleAddUser } = useManageUser();
+    const { handleAddUser, loading, error } = useManageUser();
     const heading = role == 'admin' ? 'Admin' : 'Employee';
+
+    const handleAddnewUser = (payLoad) => {
+        handleAddUser(payLoad);
+        reset();
+    }
 
     useEffect(() => {
         reset({
@@ -19,7 +24,7 @@ function AddUser({ role, designation }) {
     return (
         <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
             <form className='flex flex-col gap-10'
-                onSubmit={handleSubmit(handleAddUser)}>
+                onSubmit={handleSubmit(handleAddnewUser)}>
                 <h1 className='text-center text-xl font-semibold'>Add {heading}</h1>
                 <div className="flex gap-3 md:items-center w-full max-w-lg flex-col md:flex-row">
                     <label className="text-gray-700 font-medium max-w-28 w-full">Name:</label>
@@ -101,11 +106,10 @@ function AddUser({ role, designation }) {
                         className="bg-blue-600 max-w-lg w-full text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
                     >
-                        Add {role}
-                        {/* {loading ? 'Loading' : 'Add admin'} */}
+                        {loading ? 'Loading' : `Add ${role}`}
                     </button>
                 </div>
-                {/* {error && <p className="text-red-500 space-y-2">{error}</p>} */}
+                {error && <p className="text-red-500 space-y-2">{error}</p>}
             </form>
         </div>
     )
