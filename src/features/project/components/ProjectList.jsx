@@ -4,7 +4,7 @@ import { formatDateReadable } from '../../../utils/dateFormatter';
 import Modal from '../../../components/Modal';
 import { useState } from 'react';
 
-function ProjectList({ projects, handleDeleteProject, onEdit }) {
+function ProjectList({ projects, handleDeleteProject, enableEdit }) {
 
     const [show, setShow] = useState(null);
     const handleModal = (title, id) => {
@@ -47,7 +47,7 @@ function ProjectList({ projects, handleDeleteProject, onEdit }) {
                 <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
                     {projects?.map((project) => (
                         <div
-                            key={project.id}
+                            key={project._id}
                             className="group p-4 rounded-xl border border-gray-100 bg-white hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer relative overflow-hidden"
                         >
                             {/* Hover Effect Bar */}
@@ -56,7 +56,7 @@ function ProjectList({ projects, handleDeleteProject, onEdit }) {
                             {/* Edit/Delete Buttons */}
                             <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
-                                    onClick={() => onEdit(project)}
+                                    onClick={() => enableEdit(project._id)}
                                     className="p-1 rounded-full hover:bg-indigo-100 text-indigo-600"
                                 >
                                     <Edit2 size={16} />

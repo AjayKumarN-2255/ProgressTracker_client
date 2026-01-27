@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { emailValidation, passwordValidation } from '../../../utils/loginValidation';
+import { emailValidation, passwordValidation } from '../../../utils/validations';
 import useAuth from "../hooks/useAuth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ function LoginForm() {
 
   const { error, user, loading, isAuthenticated } = useSelector(state => state.auth);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (isAuthenticated) {
       switch (user?.role) {

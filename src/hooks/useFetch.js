@@ -25,7 +25,7 @@ export default function useFetch(url, options = {}) {
         return () => {
             isMounted = false;
         };
-    }, [url]);
+    }, [url, JSON.stringify(options)]);
 
     return { data, loading, error, setData };
 }
