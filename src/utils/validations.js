@@ -35,3 +35,19 @@ export const fromDateValidation = {
 export const toDateValidation = {
     required: "End date is required"
 };
+
+export const nameValidation = {
+    required: "Project name is required",
+    minLength: {
+        value: 3,
+        message: "Project name must be at least 3 characters",
+    },
+    maxLength: {
+        value: 50,
+        message: "Project name cannot exceed 50 characters",
+    },
+    pattern: {
+        value: /^[a-zA-Z0-9\s]+$/,
+        message: "Project name can only contain letters, numbers and spaces",
+    },
+};
