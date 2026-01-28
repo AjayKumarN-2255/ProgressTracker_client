@@ -24,6 +24,11 @@ function Sidebar() {
             icon: AddIcon
         },
         {
+            name: 'Assign Reviewer',
+            path: '/admin/add-review',
+            icon: AddIcon
+        },
+        {
             name: 'Add report',
             path: '/admin/add-report',
             icon: AddIcon
