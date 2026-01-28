@@ -11,6 +11,7 @@ import Page404 from './components/Page404';
 
 import AddProject from './features/project/pages/AddProject';
 import AddReport from './features/report/pages/AddReport';
+import EditUser from './features/users/pages/EditUser';
 
 import UserLayout from './layouts/UserLayout';
 import EmployeeDashboard from './features/employee/pages/Dashboard';
@@ -36,6 +37,7 @@ function App() {
           element: <UserLayout />,   // layout wraps all employee pages
           children: [
             { path: 'dashboard', element: <EmployeeDashboard /> },
+            { path: 'edit-account', element: <EditUser /> },
           ]
         }
       ]
@@ -51,6 +53,7 @@ function App() {
             { path: 'add-employee', element: <AddEmployee /> },
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-report', element: <AddReport /> },
+            { path: 'edit-account', element: <EditUser /> },
           ]
         }
       ]
@@ -67,6 +70,7 @@ function App() {
             { path: 'add-employee', element: <AddEmployee /> },
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-report', element: <AddReport /> },
+            { path: 'edit-account', element: <EditUser /> },
           ]
         }
       ]

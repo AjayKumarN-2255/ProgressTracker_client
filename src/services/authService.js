@@ -10,6 +10,11 @@ export const refreshToken = async () => {
   return response.data
 }
 
+export const editAccount = async (userId, payload) => {
+  const response = await api.patch(`/user/change-password/${userId}`, payload);
+  return response.data;
+};
+
 export const Logout = async () => {
   const response = await api.post('/auth/logout', {}, { requiresAuth: false, withCredentials: true });
   return response.data

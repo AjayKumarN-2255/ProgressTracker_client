@@ -22,7 +22,7 @@ function Header() {
         <div className="flex items-center space-x-5">
           <div className="flex items-center gap-2">
             <span className="text-gray-700 font-medium">{user?.name}</span>
-            <Link to="/admin/edit-account">
+            <Link to="/superadmin/edit-account">
               <div
                 className={`w-10 h-10 rounded-full ${avatarColor} text-white flex items-center justify-center font-semibold text-lg 
                   cursor-pointer border-2 border-gray-300`}
