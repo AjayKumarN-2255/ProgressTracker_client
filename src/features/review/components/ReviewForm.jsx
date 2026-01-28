@@ -5,14 +5,14 @@ import useManageReview from '../hooks/useManageReview';
 
 function ReviewForm() {
 
-  const { control, register, handleSubmit } = useForm(
+  const { control, reset, register, handleSubmit } = useForm(
     {
       defaultValues: {
         reviewMonth: new Date().toISOString().slice(0, 7)
       },
     }
   );
-  const { handleAddReview, projects, admins, employees } = useManageReview();
+  const { handleAddReview, projects, admins, employees } = useManageReview(reset);
 
   return (
     <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
