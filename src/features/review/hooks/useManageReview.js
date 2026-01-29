@@ -1,16 +1,30 @@
 import { useState } from 'react';
-import useFetch from '../../../hooks/useFetch';
 import toast from 'react-hot-toast';
-import { addReview } from '../../../services/reviewService';
-
+import { addReview, deleteReview } from '../../../services/reviewService';
 
 export default function useManageReview(reset) {
 
-    const { data: projects } = useFetch('/project');
-    const { data: admins } = useFetch('/user', { params: { role: 'admin' } });
-    const { data: employees } = useFetch('/user', { params: { role: 'employee' } });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const handleDeleteReview = async (rId) => {
+        try {
+            setLoading(true);
+            setError(null);
+            console.log(rId)
+            const res = await deleteReview(rId);
+            if (res.success) {
+                return rId;
+            }
+        } catch (err) {
+            console.error("Failed to delete review:", err);
+            const message = err?.response?.data?.message || err?.message || "Failed to delete review";
+            setError(message);
+            toast.error(message);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleAddReview = async (formData) => {
         const payLoad = {
@@ -48,10 +62,8 @@ export default function useManageReview(reset) {
 
     return {
         handleAddReview,
+        handleDeleteReview,
         error,
-        loading,
-        admins,
-        projects,
-        employees
+        loading
     }
 }

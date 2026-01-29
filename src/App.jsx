@@ -14,6 +14,7 @@ import AddReport from './features/report/pages/AddReport';
 import EditUser from './features/users/pages/EditUser';
 
 import AssignReviewer from './features/review/pages/AssignReviewer';
+import AssginedReviews from './features/review/pages/AssignedReviews';
 
 import UserLayout from './layouts/UserLayout';
 import EmployeeDashboard from './features/employee/pages/Dashboard';
@@ -56,6 +57,7 @@ function App() {
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-report', element: <AddReport /> },
             { path: 'add-review', element: <AssignReviewer /> },
+            { path: 'assigned-reviews', element: <AssginedReviews /> },
             { path: 'edit-account', element: <EditUser /> },
           ]
         }

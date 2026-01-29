@@ -1,6 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
+import useFetch from '../../../hooks/useFetch';
 import useManageReview from '../hooks/useManageReview';
 
 function ReviewForm() {
@@ -12,7 +13,10 @@ function ReviewForm() {
       },
     }
   );
-  const { handleAddReview, projects, admins, employees } = useManageReview(reset);
+  const { data: projects } = useFetch('/project');
+  const { data: admins } = useFetch('/user', { params: { role: 'admin' } });
+  const { data: employees } = useFetch('/user', { params: { role: 'employee' } });
+  const { handleAddReview } = useManageReview(reset);
 
   return (
     <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
