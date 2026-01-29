@@ -8,10 +8,21 @@ import { useSelector } from 'react-redux';
 
 function ReviewList({ filter }) {
   const { user } = useSelector(state => state.auth);
-  const { data: reviews, setData: setReviews, loading, error } = useFetch('/review', {
-    params: filter === 'assigned'
-      ? { userId: user?._id }
-      : {}
+  const { data: reviews, setData: setReviews, error } = useFetch('/review', {
+    params: (() => {
+      switch (filter) {
+        case 'all':
+          return { status: 'assigned' };
+        case 'assigned':
+          return { userId: user?._id, status: 'assigned' };
+        case 'mySubmitted':
+          return { userId: user?._id, status: 'completed' };
+        case 'allSubmitted':
+          return { status: 'completed' };
+        default:
+          return {};
+      }
+    })()
   });
 
   const [show, setShow] = useState({
@@ -41,7 +52,6 @@ function ReviewList({ filter }) {
     });
   }
 
-  if (loading) return <p>Loading reviews...</p>;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (!reviews || reviews.length === 0) return <p>No reviews found.</p>;
 
