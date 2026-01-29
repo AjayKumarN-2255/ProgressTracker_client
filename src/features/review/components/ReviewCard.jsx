@@ -8,7 +8,7 @@ export default function ReviewCard({ review, handleShowModal }) {
 
     const handleAddReport = (e) => {
         e.stopPropagation();
-        navigate(`/reviews/${review._id}/add-report`);
+        navigate(`/admin/add-report/${review._id}`);
     };
 
     const toggleMenu = (e) => {
@@ -54,9 +54,12 @@ export default function ReviewCard({ review, handleShowModal }) {
         return date.toLocaleString('default', { month: 'long', year: 'numeric' });
     })();
 
+    const isCompleted = review.status === 'completed';
+
     return (
         <div className="relative group bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden w-full">
 
+            {/* Three-dot menu */}
             <div ref={menuRef} className="absolute top-2 left-2 z-50 flex flex-col items-center gap-1">
                 <button
                     onClick={toggleMenu}
@@ -69,12 +72,16 @@ export default function ReviewCard({ review, handleShowModal }) {
 
                 {menuOpen && (
                     <div className="absolute top-6 left-0 w-32 bg-white border border-gray-200 rounded-md shadow-lg">
-                        <button
-                            onClick={handleEdit}
-                            className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
-                        >
-                            Edit
-                        </button>
+                        {/* Only show Edit if not completed */}
+                        {!isCompleted && (
+                            <button
+                                onClick={handleEdit}
+                                className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+                            >
+                                Edit
+                            </button>
+                        )}
+                        {/* Always show Delete */}
                         <button
                             onClick={handleDelete}
                             className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
@@ -135,16 +142,18 @@ export default function ReviewCard({ review, handleShowModal }) {
                         <span className="capitalize">{review.status}</span>
                     </div>
 
-                    {/* Add Report */}
-                    <button
-                        onClick={handleAddReport}
-                        className="flex items-center gap-2 bg-indigo-600 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-700 hover:shadow active:scale-95 transition-transform"
-                    >
-                        <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Report
-                    </button>
+                    {/* Add Report button (hidden if completed) */}
+                    {!isCompleted && (
+                        <button
+                            onClick={handleAddReport}
+                            className="flex items-center gap-2 bg-indigo-600 text-white text-xs md:text-sm font-medium px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-700 hover:shadow active:scale-95 transition-transform"
+                        >
+                            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Report
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

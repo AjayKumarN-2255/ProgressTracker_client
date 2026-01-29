@@ -56,7 +56,7 @@ function App() {
             { path: 'dashboard', element: <AdminDashboard /> },
             { path: 'add-employee', element: <AddEmployee /> },
             { path: 'add-project', element: <AddProject /> },
-            { path: 'add-report', element: <AddReport /> },
+            { path: 'add-report/:id', element: <AddReport /> },
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'assigned-reviews', element: <AssginedReviews /> },
             { path: 'edit-review/:id', element: <EditReviewForm /> },
