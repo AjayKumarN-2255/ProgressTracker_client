@@ -48,7 +48,6 @@ function EditReviewForm() {
 
     const { data: projects } = useFetch('/project');
     const { data: admins } = useFetch('/user', { params: { role: 'admin' } });
-    const { data: employees } = useFetch('/user', { params: { role: 'employee' } });
 
     const { handleEditReview } = useManageReview();
     const handleFormSubmit = (formData) => {
@@ -100,11 +99,9 @@ function EditReviewForm() {
                             <div className='flex flex-col w-full'>
                                 <Select
                                     {...field}
-                                    isMulti
-                                    options={employees?.map((employee) => ({ value: employee?._id, label: employee?.name }))}
+                                    isDisabled={true}
                                     className="w-full"
                                     placeholder="Select a employee"
-                                    onChange={(val) => field.onChange(val)}
                                 />
                                 {error && (
                                     <p className="text-red-500 text-sm">{error.message}</p>

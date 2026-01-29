@@ -30,29 +30,24 @@ export default function useManageReview(reset) {
     }
 
     const handleEditReview = async (rId, payLoad) => {
+        try {
+            setLoading(true);
+            setError(null);
 
-
-        console.log("edit payload", payLoad);
-        console.log("reviewId", rId);
-
-        // try {
-        //     setLoading(true);
-        //     setError(null);
-
-        //     const res = await editReview(rId, payLoad);
-        //     if (res.success) {
-        //         console.log(res.data);
-        //         toast.success("Review edited successfully!");
-        //         navigate('/admin/assigned-reviews')
-        //     }
-        // } catch (err) {
-        //     console.error("Failed to add user:", err);
-        //     const message = err?.response?.data?.message || err?.message || "Failed to edit review";
-        //     setError(message);
-        //     toast.error(message);
-        // } finally {
-        //     setLoading(false);
-        // }
+            const res = await editReview(rId, payLoad);
+            if (res.success) {
+                console.log(res.data);
+                toast.success("Review edited successfully!");
+                navigate('/admin/assigned-reviews')
+            }
+        } catch (err) {
+            console.error("Failed to add user:", err);
+            const message = err?.response?.data?.message || err?.message || "Failed to edit review";
+            setError(message);
+            toast.error(message);
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handleAddReview = async (formData) => {
