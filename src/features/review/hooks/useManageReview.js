@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { addReview, deleteReview } from '../../../services/reviewService';
+import { addReview, deleteReview, editReview } from '../../../services/reviewService';
+import { useNavigate } from 'react-router-dom';
 
 export default function useManageReview(reset) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleDeleteReview = async (rId) => {
         try {
@@ -24,6 +27,32 @@ export default function useManageReview(reset) {
         } finally {
             setLoading(false);
         }
+    }
+
+    const handleEditReview = async (rId, payLoad) => {
+
+
+        console.log("edit payload", payLoad);
+        console.log("reviewId", rId);
+
+        // try {
+        //     setLoading(true);
+        //     setError(null);
+
+        //     const res = await editReview(rId, payLoad);
+        //     if (res.success) {
+        //         console.log(res.data);
+        //         toast.success("Review edited successfully!");
+        //         navigate('/admin/assigned-reviews')
+        //     }
+        // } catch (err) {
+        //     console.error("Failed to add user:", err);
+        //     const message = err?.response?.data?.message || err?.message || "Failed to edit review";
+        //     setError(message);
+        //     toast.error(message);
+        // } finally {
+        //     setLoading(false);
+        // }
     }
 
     const handleAddReview = async (formData) => {
@@ -63,6 +92,7 @@ export default function useManageReview(reset) {
     return {
         handleAddReview,
         handleDeleteReview,
+        handleEditReview,
         error,
         loading
     }

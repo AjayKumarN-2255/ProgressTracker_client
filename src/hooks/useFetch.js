@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../services/api";
 
 export default function useFetch(url, options = {}) {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 

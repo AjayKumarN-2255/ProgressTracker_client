@@ -19,7 +19,7 @@ export default function ReviewCard({ review, handleShowModal }) {
     const handleEdit = (e) => {
         e.stopPropagation();
         setMenuOpen(false);
-        navigate(`/admin/edit-report/${review._id}`);
+        navigate(`/admin/edit-review/${review._id}`);
     };
 
     const handleDelete = (e) => {

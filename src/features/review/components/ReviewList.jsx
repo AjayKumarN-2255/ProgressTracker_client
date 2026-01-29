@@ -4,9 +4,16 @@ import ReviewCard from './ReviewCard';
 import Modal from '../../../components/Modal';
 import toast from 'react-hot-toast';
 import useManageReview from '../hooks/useManageReview';
+import { useSelector } from 'react-redux';
 
-function ReviewList() {
-  const { data: reviews, setData: setReviews, loading, error } = useFetch('/review');
+function ReviewList({ filter }) {
+  const { user } = useSelector(state => state.auth);
+  const { data: reviews, setData: setReviews, loading, error } = useFetch('/review', {
+    params: filter === 'assigned'
+      ? { userId: user?._id }
+      : {}
+  });
+
   const [show, setShow] = useState({
     success: false,
     rId: null

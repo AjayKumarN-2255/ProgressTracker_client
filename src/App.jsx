@@ -24,6 +24,7 @@ import AdminDashboard from './features/admin/pages/Dashboard';
 
 import SuperAdminLayout from './layouts/SuperAdminLayout';
 import SuperDashboard from './features/superadmin/pages/Dashboard';
+import EditReviewForm from './features/review/components/EditReviewForm';
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
             { path: 'add-report', element: <AddReport /> },
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'assigned-reviews', element: <AssginedReviews /> },
+            { path: 'edit-review/:id', element: <EditReviewForm /> },
             { path: 'edit-account', element: <EditUser /> },
           ]
         }
