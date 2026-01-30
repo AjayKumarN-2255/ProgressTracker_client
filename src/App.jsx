@@ -76,7 +76,6 @@ function App() {
             { path: 'add-admin', element: <AddAdmin /> },
             { path: 'add-employee', element: <AddEmployee /> },
             { path: 'add-project', element: <AddProject /> },
-            { path: 'add-report', element: <AddReport /> },
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'edit-account', element: <EditUser /> },
           ]

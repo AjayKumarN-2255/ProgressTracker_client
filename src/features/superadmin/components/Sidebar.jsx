@@ -32,11 +32,6 @@ function Sidebar() {
             name: 'Assign Reviewer',
             path: '/superadmin/add-review',
             icon: AddIcon
-        },
-        {
-            name: 'Add report',
-            path: '/superadmin/add-report',
-            icon: AddIcon
         }
     ]
 

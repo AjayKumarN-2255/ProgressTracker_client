@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetch from '../../../hooks/useFetch';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
+import { tabs } from '../components/tabs/tabConfig';
+import useManageReport from '../hooks/useMangeReport';
 
 function AddReportForm() {
+
+  const [activeTab, setActiveTab] = useState(0);
+  const ActiveTabComponent = tabs[activeTab].component;
+
+  const { handleAddReport, cleanArray } = useManageReport();
 
   const { id } = useParams();
   const { data: review } = useFetch('/review', {
@@ -12,88 +19,96 @@ function AddReportForm() {
     }
   });
 
-  const { register, reset, handleSubmit } = useForm({
+  const methods = useForm({
     defaultValues: {
       reviewer: '',
       employee: '',
       project: '',
-      reviewMonth: ''
+      reviewMonth: '',
+      milestones: [{ content: "", value: "" }],
+      patternsToAddress: [{ content: "", value: "" }],
+      memos: [{ content: "", value: "" }]
     }
   });
 
   useEffect(() => {
     if (review?.length > 0) {
       const r = review[0];
-      reset({
+      methods.reset({
         reviewer: r.reviewer?.name || '',
         employee: r.employee?.name || '',
         project: r.project?.name || '',
-        reviewMonth: r.reviewMonth?.slice(0, 7) || ''
+        reviewMonth: r.reviewMonth?.slice(0, 7) || '',
+        milestones: [{ content: "", value: "" }],
+        patternsToAddress: [{ content: "", value: "" }],
+        memos: [{ content: "", value: "" }]
       });
     }
-  }, [review, reset]);
+  }, [review, methods.reset]);
 
-  const onSubmit = (data) => {
-    console.log("Report submitted:", data);
-    // Call your API here
+  const handleNextClick = () => {
+    setActiveTab(prev => prev + 1);
+  }
+
+  const handlePrevClick = () => {
+    setActiveTab(prev => prev - 1);
+  }
+
+  const onSubmit = (formData) => {
+    const payLoad = {}
+    payLoad.employeeId = review[0]?.employee?._id;
+    payLoad.reviewerId = review[0]?.reviewer?._id;
+    payLoad.projectId = review[0]?.project?._id;
+    payLoad.reviewMonth = formData?.reviewMonth
+    payLoad.milestones = cleanArray(formData.milestones);
+    payLoad.patternsToAddress = cleanArray(formData.patternsToAddress);
+    payLoad.memos = cleanArray(formData.memos);
+    handleAddReport(payLoad);
   }
 
   return (
     <div className='border-2 border-gray-100 rounded-lg w-full max-w-xl p-6 bg-white'>
-      <form className='flex flex-col gap-10' onSubmit={handleSubmit(onSubmit)}>
-        <h1 className='text-center text-xl font-semibold'>Add Report</h1>
+      <FormProvider {...methods}>
 
-        <div className="flex gap-3 items-center w-full max-w-lg">
-          <label className="text-gray-700 font-medium w-28 flex-shrink-0">Reviewer:</label>
-          <input
-            type="text"
-            disabled
-            {...register("reviewer")}
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 w-full"
-          />
-        </div>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
 
-        <div className="flex gap-3 items-center w-full max-w-lg">
-          <label className="text-gray-700 font-medium w-28 flex-shrink-0">Employee:</label>
-          <input
-            type="text"
-            disabled
-            {...register("employee")}
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 w-full"
-          />
-        </div>
+          <ActiveTabComponent />
+          <div className="flex justify-between items-center gap-3 py-2 mt-10">
 
-        <div className="flex gap-3 items-center w-full max-w-lg">
-          <label className="text-gray-700 font-medium w-28 flex-shrink-0">Project:</label>
-          <input
-            type="text"
-            disabled
-            {...register("project")}
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 w-full"
-          />
-        </div>
+            <div className="flex gap-2">
+              {activeTab > 0 && (
+                <button
+                  type='button'
+                  onClick={handlePrevClick}
+                  className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-300 active:scale-95 transition-transform text-sm font-medium"
+                >
+                  Prev
+                </button>
+              )}
 
-        <div className="flex gap-3 items-center w-full max-w-lg">
-          <label className="text-gray-700 font-medium w-28 flex-shrink-0">Review Month:</label>
-          <input
-            type="month"
-            disabled
-            {...register("reviewMonth")}
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 w-full"
-          />
-        </div>
+              {activeTab >= 0 && activeTab < tabs.length - 1 && (
+                <button
+                  type='button'
+                  onClick={handleNextClick}
+                  className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-300 active:scale-95 transition-transform text-sm font-medium"
+                >
+                  Next
+                </button>
+              )}
+            </div>
 
-        <div className='flex justify-start'>
-          <button
-            type="submit"
-            className="bg-blue-600 max-w-lg w-full text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
-          >
-            Add Report
-          </button>
-        </div>
+            {activeTab === tabs.length - 1 && (
+              <button
+                type='submit'
+                className="bg-indigo-600 text-white px-4 py-1.5 rounded-md hover:bg-indigo-700 active:scale-95 transition-transform text-sm font-medium"
+              >
+                Add Report
+              </button>
+            )}
+          </div>
 
-      </form>
+        </form>
+      </FormProvider>
     </div>
   );
 }
