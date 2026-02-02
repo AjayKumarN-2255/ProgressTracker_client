@@ -10,7 +10,7 @@ function AddReportForm() {
   const [activeTab, setActiveTab] = useState(0);
   const ActiveTabComponent = tabs[activeTab].component;
 
-  const { handleAddReport, cleanArray } = useManageReport();
+  const { handleAddReport, cleanArray } = useManageReport({ autoFetch: false});
 
   const { id } = useParams();
   const { data: review } = useFetch('/review', {
@@ -63,7 +63,7 @@ function AddReportForm() {
     payLoad.milestones = cleanArray(formData.milestones);
     payLoad.patternsToAddress = cleanArray(formData.patternsToAddress);
     payLoad.memos = cleanArray(formData.memos);
-    handleAddReport(payLoad);
+    handleAddReport(id, payLoad);
   }
 
   return (

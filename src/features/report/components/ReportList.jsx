@@ -1,9 +1,160 @@
-import React from 'react'
+import React from 'react';
+import useManageReport from '../hooks/useMangeReport';
+import { Loader } from 'lucide-react';
+import { formatDateReadable } from '../../../utils/dateFormatter';
 
-function ReportList() {
+export default function ReportList({ userId }) {
+  const { data: reports, loading } = useManageReport({ userId });
+
+  if (loading) {
+    return (
+      <div className='w-full h-screen flex justify-center items-center'>
+        <Loader />
+      </div>
+    )
+  }
+
+  if (!reports || reports.length === 0) {
+    return (
+      <div className="text-center p-10 text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+        {userId ? 'No reports found for this user.' : 'Select a user to view reports.'}
+      </div>
+    );
+  }
+
   return (
-    <div>ReportList</div>
-  )
-}
+    <div className="space-y-12 p-6 bg-gray-50/50">
+      {reports.map((report, ind) => {
+        const { _id, projectId, reviewMonth, reviewerId, milestones, patternsToAddress, memos } = report;
 
-export default ReportList
+        const sumMilestones = milestones.reduce((sum, item) => sum + (item.value || 0), 0);
+        const sumPatterns = patternsToAddress.reduce((sum, item) => sum + (item.value || 0), 0);
+        const sumMemos = memos.reduce((sum, item) => sum + (item.value || 0), 0);
+
+        const totalScore = sumMilestones + (sumPatterns + sumMemos);
+
+        const maxRows = Math.max(milestones.length, patternsToAddress.length, memos.length, 5);
+        const getCell = (arr, index) => arr[index] || { content: '', value: '' };
+
+        return (
+          <div key={_id} className="flex flex-col lg:flex-row gap-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+
+            {/* --- LEFT PANEL: Project Info & Score --- */}
+            <div className="lg:w-1/4 flex flex-col gap-6 shrink-0">
+              <div>
+                <p className="text-sm text-gray-500 font-medium mb-1">
+                  Project {(ind + 1).toString().padStart(2, '0')}
+                </p>
+
+                <h2 className="text-3xl font-extrabold text-gray-800 leading-tight">
+                  {projectId.name}
+                </h2>
+                <p className="text-sm text-gray-500 font-medium mt-1">
+                  Review Month : {formatDateReadable(reviewMonth)}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-0.5">
+                <p className="text-xs text-gray-500 font-medium">Reviewed By :</p>
+                <h2 className="text-sm font-semibold text-gray-700">
+                  {reviewerId?.name || 'N/A'}
+                </h2>
+              </div>
+
+              <div>
+                <p className="text-sm text-gray-500 font-medium mb-2">Score</p>
+                <div className={`text-6xl font-bold py-8 px-6 w-full text-center rounded-sm ${totalScore < 0 ? 'bg-red-200 text-red-900' : 'bg-green-100 text-green-900'
+                  }`}>
+                  {totalScore}
+                </div>
+              </div>
+            </div>
+
+            {/* --- RIGHT PANEL: Data Table --- */}
+            <div className="lg:w-3/4 overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr>
+                    {/* Milestones Header */}
+                    <th className="bg-orange-400 text-white font-semibold py-3 px-3 text-left w-[25%] border-r-8 border-white">
+                      Milestones Reached
+                    </th>
+                    <th className="bg-orange-200 text-orange-900 font-semibold py-3 px-3 text-center w-[8%] border-r-8 border-white">
+                      Weight
+                    </th>
+
+                    {/* Patterns Header */}
+                    <th className="bg-gray-600 text-white font-semibold py-3 px-3 text-left w-[25%] border-r-8 border-white">
+                      Patterns to address
+                    </th>
+                    <th className="bg-gray-400 text-white font-semibold py-3 px-3 text-center w-[8%] border-r-8 border-white">
+                      Weight
+                    </th>
+
+                    {/* Memos Header */}
+                    <th className="bg-red-600 text-white font-semibold py-3 px-3 text-left w-[25%] border-r-8 border-white">
+                      Memos
+                    </th>
+                    <th className="bg-red-300 text-red-900 font-semibold py-3 px-3 text-center w-[8%]">
+                      Weight
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {Array.from({ length: maxRows }).map((_, idx) => {
+                    const m = getCell(milestones, idx);
+                    const p = getCell(patternsToAddress, idx);
+                    const memo = getCell(memos, idx);
+
+                    return (
+                      <tr key={idx} className="group hover:bg-gray-50 transition-colors">
+                        {/* Milestone Columns */}
+                        <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white align-middle">
+                          {m.content}
+                        </td>
+                        <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white text-center align-middle font-medium bg-gray-50/50">
+                          {m.value}
+                        </td>
+
+                        {/* Pattern Columns */}
+                        <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white align-middle">
+                          {p.content}
+                        </td>
+                        <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white text-center align-middle font-medium bg-gray-50/50">
+                          {p.value}
+                        </td>
+
+                        {/* Memo Columns */}
+                        <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white align-middle">
+                          {memo.content}
+                        </td>
+                        <td className="py-2 px-3 h-12 border-b-[.2px] border-gray-200 text-center align-middle font-medium bg-gray-50/50">
+                          {memo.value}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+
+                <tfoot>
+                  <tr className="font-bold text-gray-700 bg-gray-50">
+                    <td className="py-4 px-3 text-right border-r-8 border-white">Total</td>
+                    <td className="py-4 px-3 text-center border-r-8 border-white">{sumMilestones}</td>
+
+                    <td className="py-4 px-3 text-right border-r-8 border-white">Total</td>
+                    <td className="py-4 px-3 text-center border-r-8 border-white">{sumPatterns}</td>
+
+                    <td className="py-4 px-3 text-right border-r-8 border-white">Total</td>
+                    <td className="py-4 px-3 text-center">{sumMemos}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+          </div>
+        );
+      })}
+    </div>
+  );
+}

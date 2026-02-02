@@ -1,10 +1,14 @@
 import React from 'react';
-import UserDashboard from '../components/UserDashboard'
+import ReportList from '../../report/components/ReportList';
+import { useSelector } from 'react-redux';
 
 function Dashboard() {
+
+    const { user } = useSelector(state => state.auth);
+
     return (
         <div>
-            <UserDashboard />
+            <ReportList userId={user?._id} />
         </div>
     )
 }
