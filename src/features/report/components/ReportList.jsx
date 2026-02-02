@@ -1,10 +1,17 @@
 import React from 'react';
 import useManageReport from '../hooks/useMangeReport';
-import { Loader } from 'lucide-react';
 import { formatDateReadable } from '../../../utils/dateFormatter';
+import useFilter from '../hooks/useFilter';
+import DateFilter from './DateFilter';
+import { Loader } from 'lucide-react';
 
 export default function ReportList({ userId }) {
   const { data: reports, loading } = useManageReport({ userId });
+
+  const { filterType, filterValue, filterYear,
+    setFilterType, setFilterValue, setFilterYear,
+    applyDateFilter, clearDateFilter
+  } = useFilter();
 
   if (loading) {
     return (
@@ -24,6 +31,20 @@ export default function ReportList({ userId }) {
 
   return (
     <div className="space-y-12 p-6 bg-gray-50/50">
+      <div className='w-full p-4 gap-4 flex flex-col 2xl:flex-row justify-between bg-gray-50 rounded-lg shadow-sm'>
+        <div className='flex flex-col w-full lg:flex-row gap-4  xl:justify-between 2xl:max-w-lg lg:gap-8'>
+
+          <DateFilter filterType={filterType} filterValue={filterValue} filterYear={filterYear}
+            setFilterType={setFilterType} setFilterValue={setFilterValue} setFilterYear={setFilterYear}
+            applyDateFilter={applyDateFilter} clearDateFilter={clearDateFilter} />
+
+        </div>
+
+        <div className='hidden 2xl:flex'>
+
+        </div>
+
+      </div>
       {reports.map((report, ind) => {
         const { _id, projectId, reviewMonth, reviewerId, milestones, patternsToAddress, memos } = report;
 
