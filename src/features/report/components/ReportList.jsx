@@ -7,11 +7,12 @@ import DateFilter from './DateFilter';
 import { Loader } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UserSelector from './UserSelector';
+import ProjectSelector from './ProjectSelector';
 
 export default function ReportList({ currentUserId, userRole }) {
 
-  const { filterType, filterValue, filterYear,
-    setFilterType, setFilterValue, setFilterYear,
+  const { filterType, filterValue, filterYear, applyProjectFilter,
+    setFilterType, setFilterValue, setFilterYear, projectId,
     applyDateFilter, clearDateFilter, userId, applyUserFilter
   } = useFilter();
 
@@ -22,6 +23,7 @@ export default function ReportList({ currentUserId, userRole }) {
   });
 
   const { data: reports, loading } = useManageReport({ userId });
+  const { data: projects } = useFetch('/project');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +54,11 @@ export default function ReportList({ currentUserId, userRole }) {
                 applyUserFilter={applyUserFilter} />
             </div>
           )}
+
+          <div className="w-full lg:max-w-xs">
+            <ProjectSelector projects={projects} selectedProjectId={projectId}
+              applyProjectFilter={applyProjectFilter} />
+          </div>
 
           {/* RIGHT SIDE – Date Filter */}
           <div className="w-full lg:w-auto">

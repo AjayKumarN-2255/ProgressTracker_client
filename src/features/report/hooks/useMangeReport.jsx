@@ -37,9 +37,8 @@ export default function useManageReport(options) {
             const QueryValue = getQueryParam("value", false);
             const QueryYear = getQueryParam("year", false);
             const QueryUser = getQueryParam("userId", false);
-            console.log(QueryType, QueryUser);
-            console.log(QueryValue, QueryYear);
-            const res = await getReports(QueryUser);
+            const QueryPid = getQueryParam("pId", false);
+            const res = await getReports(QueryUser, QueryType, QueryValue, QueryYear, QueryPid);
             if (res?.success) {
                 setData(res?.data);
             }

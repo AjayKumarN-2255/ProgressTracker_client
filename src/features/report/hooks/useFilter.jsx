@@ -13,6 +13,7 @@ export default function useFilter() {
     const [filterValue, setFilterValue] = useState(now.getMonth());
 
     const [userId, setUserId] = useState(null);
+    const [projectId, setProjectId] = useState(null);
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -40,6 +41,8 @@ export default function useFilter() {
         setFilterYear(selectedfilterYear);
         const selectedUserId = getQueryParam("userId", false);
         setUserId(selectedUserId);
+        const selectedProjectId = getQueryParam("pId", false);
+        setProjectId(selectedProjectId);
     }, [location.pathname, location.search])
 
     const applyDateFilter = () => {
@@ -135,12 +138,22 @@ export default function useFilter() {
     const applyUserFilter = (value) => {
         const params = new URLSearchParams(location.search);
         if (value) {
-            params.set('userId', value);  
+            params.set('userId', value);
         } else {
-            params.delete('userId');    
+            params.delete('userId');
         }
         navigate(`${location.pathname}?${params.toString()}`);
     };
+
+    const applyProjectFilter = (value) => {
+        const params = new URLSearchParams(location.search);
+        if (value) {
+            params.set('pId', value);
+        } else {
+            params.delete('pId');
+        }
+        navigate(`${location.pathname}?${params.toString()}`);
+    }
 
 
     return {
@@ -149,11 +162,14 @@ export default function useFilter() {
         filterValue,
         userId,
         setUserId,
+        projectId,
+        setProjectId,
         setFilterType,
         setFilterYear,
         setFilterValue,
         applyDateFilter,
         clearDateFilter,
-        applyUserFilter
+        applyUserFilter,
+        applyProjectFilter
     }
 }

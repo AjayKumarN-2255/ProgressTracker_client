@@ -1,11 +1,15 @@
 import api from "./api";
 
 
-export const getReports = async (userId) => {
+export const getReports = async (QueryUser, QueryType, QueryValue, QueryYear, QueryPid) => {
 
     const response = await api.get('/report', {
         params: {
-            userId
+            userId: QueryUser,
+            type: QueryType,
+            value: QueryValue,
+            year: QueryYear,
+            pId: QueryPid
         }
     });
     return response.data;
