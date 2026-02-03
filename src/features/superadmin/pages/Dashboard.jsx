@@ -1,10 +1,10 @@
 import React from 'react';
-import SuperDashboard from '../components/SuperDashboard';
+import ReportList from '../../report/components/ReportList';
 
 function Dashboard() {
     return (
-        <div>
-            <SuperDashboard />
+        <div className='flex w-full h-full overflow-y-scroll'>
+            <ReportList currentUserId={""} userRole={"superadmin"} />
         </div>
     )
 }

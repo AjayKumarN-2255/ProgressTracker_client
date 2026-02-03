@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useManageReport from '../hooks/useMangeReport';
 import { formatDateReadable } from '../../../utils/dateFormatter';
 import useFilter from '../hooks/useFilter';
+import useFetch from '../../../hooks/useFetch';
 import DateFilter from './DateFilter';
 import { Loader } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import UserSelector from './UserSelector';
 
-export default function ReportList({ userId }) {
-  const { data: reports, loading } = useManageReport({ userId });
+export default function ReportList({ currentUserId, userRole }) {
 
   const { filterType, filterValue, filterYear,
     setFilterType, setFilterValue, setFilterYear,
-    applyDateFilter, clearDateFilter
+    applyDateFilter, clearDateFilter, userId, applyUserFilter
   } = useFilter();
+
+  const shouldFetchUsers = !currentUserId;
+  const { data: employees } = useFetch('/user', {
+    params: { role: 'employee' },
+    enabled: shouldFetchUsers
+  });
+
+  const { data: reports, loading } = useManageReport({ userId });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUserId) {
+      navigate(`/${userRole}/dashboard?type=CURRENT&userId=${currentUserId}`)
+    } else {
+      navigate(`/${userRole}/dashboard?type=CURRENT`)
+    }
+  }, [])
 
   if (loading) {
     return (
@@ -21,32 +40,44 @@ export default function ReportList({ userId }) {
     )
   }
 
-  if (!reports || reports.length === 0) {
-    return (
-      <div className="text-center p-10 text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-        {userId ? 'No reports found for this user.' : 'Select a user to view reports.'}
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-12 p-6 bg-gray-50/50">
-      <div className='w-full p-4 gap-4 flex flex-col 2xl:flex-row justify-between bg-gray-50 rounded-lg shadow-sm'>
-        <div className='flex flex-col w-full lg:flex-row gap-4  xl:justify-between 2xl:max-w-lg lg:gap-8'>
+    <div className="space-y-12 p-10 w-full bg-gray-50/50">
+      <div className="w-full p-4 bg-gray-50 rounded-lg shadow-sm">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 
-          <DateFilter filterType={filterType} filterValue={filterValue} filterYear={filterYear}
-            setFilterType={setFilterType} setFilterValue={setFilterValue} setFilterYear={setFilterYear}
-            applyDateFilter={applyDateFilter} clearDateFilter={clearDateFilter} />
+          {/* LEFT SIDE – User Selector (Admin only) */}
+          {!currentUserId && (
+            <div className="w-full lg:max-w-xs">
+              <UserSelector users={employees} selectedUserId={userId}
+                applyUserFilter={applyUserFilter} />
+            </div>
+          )}
+
+          {/* RIGHT SIDE – Date Filter */}
+          <div className="w-full lg:w-auto">
+            <DateFilter
+              filterType={filterType}
+              filterValue={filterValue}
+              filterYear={filterYear}
+              setFilterType={setFilterType}
+              setFilterValue={setFilterValue}
+              setFilterYear={setFilterYear}
+              applyDateFilter={applyDateFilter}
+              clearDateFilter={clearDateFilter}
+            />
+          </div>
 
         </div>
-
-        <div className='hidden 2xl:flex'>
-
-        </div>
-
       </div>
-      {reports.map((report, ind) => {
-        const { _id, projectId, reviewMonth, reviewerId, milestones, patternsToAddress, memos } = report;
+
+      {(!reports || reports.length === 0) ? (
+        <div className="text-center p-10 text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+          {userId
+            ? 'No reports found for this user.'
+            : 'Select a user to view reports.'}
+        </div>
+      ) : reports.map((report, ind) => {
+        const { _id, projectId, reviewMonth, reviewerId, employeeId, milestones, patternsToAddress, memos } = report;
 
         const sumMilestones = milestones.reduce((sum, item) => sum + (item.value || 0), 0);
         const sumPatterns = patternsToAddress.reduce((sum, item) => sum + (item.value || 0), 0);
@@ -75,12 +106,22 @@ export default function ReportList({ userId }) {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-0.5">
-                <p className="text-xs text-gray-500 font-medium">Reviewed By :</p>
-                <h2 className="text-sm font-semibold text-gray-700">
-                  {reviewerId?.name || 'N/A'}
-                </h2>
+              <div className="flex justify-between pe-6 gap-2">
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Employee :</p>
+                  <h2 className="text-sm font-semibold text-gray-700">
+                    {employeeId?.name || 'N/A'}
+                  </h2>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Reviewed By :</p>
+                  <h2 className="text-sm font-semibold text-gray-700">
+                    {reviewerId?.name || 'N/A'}
+                  </h2>
+                </div>
+
               </div>
+
 
               <div>
                 <p className="text-sm text-gray-500 font-medium mb-2">Score</p>

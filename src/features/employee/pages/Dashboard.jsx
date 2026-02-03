@@ -8,7 +8,7 @@ function Dashboard() {
 
     return (
         <div>
-            <ReportList userId={user?._id} />
+            <ReportList currentUserId={user?._id} userRole={"employee"} />
         </div>
     )
 }

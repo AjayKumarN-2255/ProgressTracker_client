@@ -12,15 +12,10 @@ export default function useFilter() {
     const [filterYear, setFilterYear] = useState(now.getFullYear());
     const [filterValue, setFilterValue] = useState(now.getMonth());
 
+    const [userId, setUserId] = useState(null);
 
     const location = useLocation();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!filterType) {
-            navigate('/employee/dashboard?type=CURRENT')
-        }
-    }, [filterType, navigate])
 
     const getQueryParam = (paramName, isArray = true) => {
         const params = new URLSearchParams(location.search);
@@ -43,7 +38,9 @@ export default function useFilter() {
         setFilterValue(selectedfilterValue);
         const selectedfilterYear = getQueryParam("year", false);
         setFilterYear(selectedfilterYear);
-    }, [location])
+        const selectedUserId = getQueryParam("userId", false);
+        setUserId(selectedUserId);
+    }, [location.pathname, location.search])
 
     const applyDateFilter = () => {
 
@@ -119,17 +116,44 @@ export default function useFilter() {
     }
 
     const clearDateFilter = () => {
-        console.log("filter type", filterType)
-    }
+
+        if (filterType == 'CURRENT') {
+            toast.error("nothing to clear");
+            return;
+        }
+
+        setFilterType('');
+        setFilterYear('');
+        setFilterValue('');
+        const params = new URLSearchParams(location.search);
+        params.delete('year');
+        params.delete('value');
+        params.set('type', 'CURRENT');
+        navigate(`${location.pathname}?${params.toString()}`);
+    };
+
+    const applyUserFilter = (value) => {
+        const params = new URLSearchParams(location.search);
+        if (value) {
+            params.set('userId', value);  
+        } else {
+            params.delete('userId');    
+        }
+        navigate(`${location.pathname}?${params.toString()}`);
+    };
+
 
     return {
         filterType,
         filterYear,
         filterValue,
+        userId,
+        setUserId,
         setFilterType,
         setFilterYear,
         setFilterValue,
         applyDateFilter,
-        clearDateFilter
+        clearDateFilter,
+        applyUserFilter
     }
 }
