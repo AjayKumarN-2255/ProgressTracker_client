@@ -4,7 +4,7 @@ import { formatDateReadable } from '../../../utils/dateFormatter';
 import useFilter from '../hooks/useFilter';
 import useFetch from '../../../hooks/useFetch';
 import DateFilter from './DateFilter';
-import { Loader } from 'lucide-react';
+import { Loader, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UserSelector from './UserSelector';
 import ProjectSelector from './ProjectSelector';
@@ -101,9 +101,20 @@ export default function ReportList({ currentUserId, userRole }) {
             {/* --- LEFT PANEL: Project Info & Score --- */}
             <div className="lg:w-1/4 flex flex-col gap-6 shrink-0">
               <div>
-                <p className="text-sm text-gray-500 font-medium mb-1">
-                  Project {(ind + 1).toString().padStart(2, '0')}
-                </p>
+                <div className='flex w-full justify-between'>
+                  <p className="text-sm text-gray-500 font-medium mb-1">
+                    Project {(ind + 1).toString().padStart(2, '0')}
+                  </p>
+                  {userRole !== "employee" &&
+                    <button
+                      onClick={() => navigate(`/${userRole}/edit-report/${_id}`)}
+                      className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800"
+                    >
+                      <Pencil size={16} />
+                      Edit
+                    </button>
+                  }
+                </div>
 
                 <h2 className="text-3xl font-extrabold text-gray-800 leading-tight">
                   {projectId.name}
@@ -111,6 +122,7 @@ export default function ReportList({ currentUserId, userRole }) {
                 <p className="text-sm text-gray-500 font-medium mt-1">
                   Review Month : {formatDateReadable(reviewMonth)}
                 </p>
+                {/* EDIT BUTTON */}
               </div>
 
               <div className="flex justify-between pe-6 gap-2">

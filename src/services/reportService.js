@@ -15,6 +15,11 @@ export const getReports = async (QueryUser, QueryType, QueryValue, QueryYear, Qu
     return response.data;
 }
 
+export const editReport = async (reportId, payLoad) => {
+    const response = await api.patch(`/report/${reportId}`, payLoad);
+    return response.data;
+};
+
 export const addReport = async (reviewId, payLoad) => {
     const response = await api.post(`/report/${reviewId}`, payLoad);
     return response.data;

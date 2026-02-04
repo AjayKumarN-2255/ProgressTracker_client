@@ -11,6 +11,7 @@ import Page404 from './components/Page404';
 
 import AddProject from './features/project/pages/AddProject';
 import AddReport from './features/report/pages/AddReport';
+import EditReport from './features/report/pages/EditReport';
 import EditUser from './features/users/pages/EditUser';
 
 import AssignReviewer from './features/review/pages/AssignReviewer';
@@ -57,6 +58,7 @@ function App() {
             { path: 'add-employee', element: <AddEmployee /> },
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-report/:id', element: <AddReport /> },
+            { path: 'edit-report/:id', element: <EditReport /> },
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'assigned-reviews', element: <AssginedReviews /> },
             { path: 'edit-review/:id', element: <EditReviewForm /> },

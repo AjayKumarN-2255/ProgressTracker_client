@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { addReport, getReports } from '../../../services/reportService';
+import { addReport, editReport, getReports } from '../../../services/reportService';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -78,7 +78,29 @@ export default function useManageReport(options) {
 
     }
 
+    const handleEditReport = async (rId, payLoad) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const res = await editReport(rId, payLoad);
+            if (res.success) {
+                console.log(res.data);
+                toast.success("Report added successfully!");
+                navigate('/admin/dashboard');
+            }
+        } catch (err) {
+            console.error("Failed to add report:", err);
+            const message = err?.response?.data?.message || err?.message || "Failed to add report";
+            setError(message);
+            toast.error(message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
+        handleEditReport,
         handleAddReport,
         fetchReports,
         cleanArray,
