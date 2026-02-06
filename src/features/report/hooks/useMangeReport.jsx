@@ -103,7 +103,7 @@ export default function useManageReport(options) {
         const disposition = headers['content-disposition'];
 
         if (!disposition) return null;
-
+        
         // Handles: attachment; filename="Report-Dec-2026.xlsx"
         const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i);
 
@@ -132,7 +132,7 @@ export default function useManageReport(options) {
             const QueryUser = getQueryParam("userId", false);
             const QueryPid = getQueryParam("pId", false);
             const { blob, header } = await exportReport(QueryUser, QueryType, QueryValue, QueryYear, QueryPid);
-            const fileName = generateFileName(header) || "Report.xlsx"
+            const fileName = generateFileName(header) || "Report.xlsx";
             downloadBlob(blob, fileName);
         } catch (err) {
             toast.error(err.response?.data?.message || "Failed to download Reports");
