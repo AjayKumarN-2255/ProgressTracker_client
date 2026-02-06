@@ -8,6 +8,7 @@ import { Loader, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UserSelector from './UserSelector';
 import ProjectSelector from './ProjectSelector';
+import ExportReport from './ExportReport';
 
 export default function ReportList({ currentUserId, userRole }) {
 
@@ -22,7 +23,7 @@ export default function ReportList({ currentUserId, userRole }) {
     enabled: shouldFetchUsers
   });
 
-  const { data: reports, loading } = useManageReport({ userId });
+  const { data: reports, loading, handleExportReport } = useManageReport({ userId });
   const { data: projects } = useFetch('/project');
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ export default function ReportList({ currentUserId, userRole }) {
   }
 
   return (
-    <div className="space-y-12 p-10 w-full bg-gray-50/50">
+    <div className="space-y-6 p-10 w-full bg-gray-50/50">
       <div className="w-full p-4 bg-gray-50 rounded-lg shadow-sm">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 
@@ -73,10 +74,14 @@ export default function ReportList({ currentUserId, userRole }) {
               clearDateFilter={clearDateFilter}
             />
           </div>
-
         </div>
       </div>
-
+      {
+        reports.length > 0 &&
+        <div className='flex justify-end'>
+          <ExportReport handleExportReport={handleExportReport} />
+        </div>
+      }
       {(!reports || reports.length === 0) ? (
         <div className="text-center p-10 text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-300">
           {userId
@@ -97,7 +102,6 @@ export default function ReportList({ currentUserId, userRole }) {
 
         return (
           <div key={_id} className="flex flex-col lg:flex-row gap-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-
             {/* --- LEFT PANEL: Project Info & Score --- */}
             <div className="lg:w-1/4 flex flex-col gap-6 shrink-0">
               <div>

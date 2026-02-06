@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { addReport, editReport, getReports } from '../../../services/reportService';
+import { addReport, editReport, getReports, exportReport } from '../../../services/reportService';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -99,7 +99,48 @@ export default function useManageReport(options) {
         }
     }
 
+    function generateFileName(headers) {
+        const disposition = headers['content-disposition'];
+
+        if (!disposition) return null;
+
+        // Handles: attachment; filename="Report-Dec-2026.xlsx"
+        const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i);
+
+        return match ? decodeURIComponent(match[1]) : null;
+    }
+
+
+    function downloadBlob(blob, fileName) {
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    }
+
+    const handleExportReport = async () => {
+        try {
+            const QueryType = getQueryParam("type", false);
+            const QueryValue = getQueryParam("value", false);
+            const QueryYear = getQueryParam("year", false);
+            const QueryUser = getQueryParam("userId", false);
+            const QueryPid = getQueryParam("pId", false);
+            const { blob, header } = await exportReport(QueryUser, QueryType, QueryValue, QueryYear, QueryPid);
+            const fileName = generateFileName(header) || "Report.xlsx"
+            downloadBlob(blob, fileName);
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to download Reports");
+        }
+    }
+
     return {
+        handleExportReport,
         handleEditReport,
         handleAddReport,
         fetchReports,

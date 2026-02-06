@@ -32,12 +32,7 @@ function Sidebar() {
             name: 'Assigned Reviewes',
             path: '/admin/assigned-reviews',
             icon: AddIcon
-        },
-        // {
-        //     name: 'Add report',
-        //     path: '/admin/add-report',
-        //     icon: AddIcon
-        // }
+        }
     ]
 
     return (
