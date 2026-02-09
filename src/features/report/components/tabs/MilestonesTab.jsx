@@ -12,7 +12,7 @@ function MilestonesTab() {
     <div className='md:min-h-[355px] flex flex-col gap-10'>
       <h1 className='text-center text-xl font-semibold'>Add Milestone</h1>
       <div className='flex flex-col gap-5'>
-        <ReportItems fieldName={"milestones"} valueOptions={valueOptions} />
+        <ReportItems type={"milestones"} fieldName={"milestones"} valueOptions={valueOptions} />
       </div>
     </div>
   )
