@@ -14,6 +14,11 @@ function Sidebar() {
             icon: DashIcon
         },
         {
+            name: 'Performance Graph',
+            path: '/admin/performance-graph',
+            icon: DashIcon
+        },
+        {
             name: 'Add Employee',
             path: '/admin/add-employee',
             icon: AddIcon

@@ -14,6 +14,11 @@ function Sidebar() {
             icon: DashIcon
         },
         {
+            name: 'Performance Graph',
+            path: '/superadmin/performance-graph',
+            icon: DashIcon
+        },
+        {
             name: 'Add Admin',
             path: '/superadmin/add-admin',
             icon: AddIcon

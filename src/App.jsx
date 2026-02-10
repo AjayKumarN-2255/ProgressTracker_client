@@ -26,6 +26,7 @@ import AdminDashboard from './features/admin/pages/Dashboard';
 import SuperAdminLayout from './layouts/SuperAdminLayout';
 import SuperDashboard from './features/superadmin/pages/Dashboard';
 import EditReviewForm from './features/review/components/EditReviewForm';
+import GraphPage from './features/report/pages/GraphPage';
 
 
 function App() {
@@ -62,6 +63,7 @@ function App() {
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'assigned-reviews', element: <AssginedReviews /> },
             { path: 'edit-review/:id', element: <EditReviewForm /> },
+            { path: 'performance-graph', element: <GraphPage /> },
             { path: 'edit-account', element: <EditUser /> },
           ]
         }
@@ -79,6 +81,7 @@ function App() {
             { path: 'add-employee', element: <AddEmployee /> },
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-review', element: <AssignReviewer /> },
+            { path: 'performance-graph', element: <GraphPage /> },
             { path: 'edit-account', element: <EditUser /> },
           ]
         }
