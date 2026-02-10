@@ -10,7 +10,7 @@ function EditReportForm() {
     const [activeTab, setActiveTab] = useState(0);
     const ActiveTabComponent = tabs[activeTab].component;
 
-    const { handleEditReport, cleanArray } = useManageReport({ autoFetch: false });
+    const { handleEditReport, cleanArray, normalizeNotes } = useManageReport({ autoFetch: false });
 
     const { id } = useParams();
     const { data: report } = useFetch('/report', {
@@ -25,9 +25,9 @@ function EditReportForm() {
             employee: '',
             project: '',
             reviewMonth: '',
-            milestones: [{ content: "", value: "" }],
-            patternsToAddress: [{ content: "", value: "" }],
-            memos: [{ content: "", value: "" }]
+            milestones: [{ noteId: "", value: "" }],
+            patternsToAddress: [{ noteId: "", value: "" }],
+            memos: [{ noteId: "", value: "" }]
         }
     });
 
@@ -39,9 +39,9 @@ function EditReportForm() {
                 employee: r.employeeId?.name || '',
                 project: r.projectId?.name || '',
                 reviewMonth: r.reviewMonth?.slice(0, 7) || '',
-                milestones: r.milestones,
-                patternsToAddress: r.patternsToAddress,
-                memos: r.memos
+                milestones: normalizeNotes(r.milestones),
+                patternsToAddress: normalizeNotes(r.patternsToAddress),
+                memos: normalizeNotes(r.memos)
             });
         }
     }, [report[0], methods.reset]);

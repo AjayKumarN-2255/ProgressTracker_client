@@ -25,9 +25,9 @@ function AddReportForm() {
       employee: '',
       project: '',
       reviewMonth: '',
-      milestones: [{ content: "", value: "" }],
-      patternsToAddress: [{ content: "", value: "" }],
-      memos: [{ content: "", value: "" }]
+      milestones: [{ noteId: "", value: "" }],
+      patternsToAddress: [{ noteId: "", value: "" }],
+      memos: [{ noteId: "", value: "" }]
     }
   });
 
@@ -39,9 +39,9 @@ function AddReportForm() {
         employee: r.employee?.name || '',
         project: r.project?.name || '',
         reviewMonth: r.reviewMonth?.slice(0, 7) || '',
-        milestones: [{ content: "", value: "" }],
-        patternsToAddress: [{ content: "", value: "" }],
-        memos: [{ content: "", value: "" }]
+        milestones: [{ noteId: "", value: "" }],
+        patternsToAddress: [{ noteId: "", value: "" }],
+        memos: [{ noteId: "", value: "" }]
       });
     }
   }, [review, methods.reset]);

@@ -25,7 +25,14 @@ export default function useManageReport(options) {
         }
     };
 
-    const cleanArray = (array) => array?.filter(item => item.content?.trim() && item.value !== "") || [];
+    const cleanArray = (array) => array?.filter(item => item.noteId?.trim() && item.value !== "") || [];
+
+    const normalizeNotes = (arr = []) =>
+        arr.map(item => ({
+            noteId: item.noteId?._id?.toString(),
+            value: item.value
+        }));
+
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -60,10 +67,8 @@ export default function useManageReport(options) {
         try {
             setLoading(true);
             setError(null);
-
             const res = await addReport(rId, payLoad);
             if (res.success) {
-                console.log(res.data);
                 toast.success("Report added successfully!");
                 navigate('/admin/assigned-reviews');
             }
@@ -103,7 +108,7 @@ export default function useManageReport(options) {
         const disposition = headers['content-disposition'];
 
         if (!disposition) return null;
-        
+
         // Handles: attachment; filename="Report-Dec-2026.xlsx"
         const match = disposition.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i);
 
@@ -143,6 +148,7 @@ export default function useManageReport(options) {
         handleExportReport,
         handleEditReport,
         handleAddReport,
+        normalizeNotes,
         fetchReports,
         cleanArray,
         loading,

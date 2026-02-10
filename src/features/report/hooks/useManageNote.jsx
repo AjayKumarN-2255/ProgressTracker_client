@@ -25,6 +25,22 @@ export default function useManageNote(type) {
         }
     };
 
+    const handleDeleteNote = async (nId, setNotes) => {
+        try {
+            const res = await de(payLoad);
+            console.log(res)
+            if (res.success) {
+                toast.success(`${type} added successfully!`);
+                setNotes((notes) => [...notes, res.data]);
+                setNewNote('')
+            }
+        } catch (err) {
+            console.error("Failed to add report:", err);
+            const message = err?.response?.data?.message || err?.message || "Failed to add report";
+            toast.error(message);
+        }
+    }
+
     return {
         newNote,
         setNewNote,

@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import { DATE_FILTER_OPTIONS } from '../../../utils/dateFilterOptions';
+import { DATE_FILTER_OPTIONS } from '../../../../utils/dateFilterOptions';
 
 function DateFilter({
     filterType,

@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
-import { useFormContext, useFieldArray } from 'react-hook-form';
+import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import Select from 'react-select';
 import { Trash2, PlusCircle, Tag, Plus } from 'lucide-react';
 import useFetch from '../../../hooks/useFetch';
 import useManageNote from '../hooks/useManageNote';
+// import { CustomOptions } from './filter/CustomOption';
 
 function ReportItems({
     fieldName,
     type,
     valueOptions = []
 }) {
-    const { control, setValue, watch } = useFormContext();
+    const { control } = useFormContext();
 
     /* FETCH NOTES */
     const { data: notes = [], setData: setNotes } = useFetch('/note', {
@@ -18,7 +19,7 @@ function ReportItems({
     });
 
     /* NOTE MANAGEMENT */
-    const { newNote, setNewNote, handleAddNote } = useManageNote(type);
+    const { newNote, setNewNote, handleAddNote, } = useManageNote(type);
 
     /* FIELD ARRAY */
     const { fields, append, remove } = useFieldArray({
@@ -31,7 +32,7 @@ function ReportItems({
         () =>
             notes.map(note => ({
                 label: note.text,
-                value: note.text
+                value: note._id
             })),
         [notes]
     );
@@ -46,14 +47,14 @@ function ReportItems({
         [valueOptions]
     );
 
-    /* HANDLERS */
-    const handleSelectNote = (selected, index) => {
-        setValue(`${fieldName}.${index}.content`, selected?.value || '');
-    };
+    /* HANDLERS when change manually without controller other wise ,only select , and watch to get current value */
+    // const handleSelectNote = (selected, index) => {
+    //     setValue(`${fieldName}.${index}.noteId`, selected?.value || '');
+    // };
 
-    const handleSelectMetric = (selected, index) => {
-        setValue(`${fieldName}.${index}.value`, selected?.value || '');
-    };
+    // const handleSelectMetric = (selected, index) => {
+    //     setValue(`${fieldName}.${index}.value`, selected?.value || '');
+    // };
 
     const onAdd = () => {
         handleAddNote(newNote, setNotes);
@@ -62,9 +63,6 @@ function ReportItems({
     return (
         <div className="space-y-4">
             {fields.map((field, index) => {
-                const contentValue = watch(`${fieldName}.${index}.content`);
-                const metricValue = watch(`${fieldName}.${index}.value`);
-
                 return (
                     <div
                         key={field.id}
@@ -75,17 +73,18 @@ function ReportItems({
                             <label className="text-xs font-semibold text-gray-500 uppercase">
                                 Quick note
                             </label>
-                            <Select
-                                options={noteOptions}
-                                placeholder="Select a saved note..."
-                                isClearable
-                                className="mt-1 text-sm"
-                                value={
-                                    contentValue
-                                        ? { label: contentValue, value: contentValue }
-                                        : null
-                                }
-                                onChange={(val) => handleSelectNote(val, index)}
+                            <Controller
+                                control={control}
+                                name={`${fieldName}.${index}.noteId`}
+                                render={({ field }) => (
+                                    <Select
+                                        options={noteOptions}
+                                        isClearable
+                                        value={noteOptions.find(o => o.value === field.value) || null}
+                                        onChange={(val) => field.onChange(val?.value || '')}
+                                        className="mt-1 text-sm"
+                                    />
+                                )}
                             />
                         </div>
 
@@ -94,17 +93,18 @@ function ReportItems({
                             <label className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 uppercase">
                                 <Tag size={14} /> Metric
                             </label>
-                            <Select
-                                options={metricOptions}
-                                placeholder="Select metric..."
-                                isClearable
-                                className="mt-1 text-sm"
-                                value={
-                                    metricValue
-                                        ? metricOptions.find(o => o.value === metricValue)
-                                        : null
-                                }
-                                onChange={(val) => handleSelectMetric(val, index)}
+                            <Controller
+                                control={control}
+                                name={`${fieldName}.${index}.value`}
+                                render={({ field }) => (
+                                    <Select
+                                        options={metricOptions}
+                                        isClearable
+                                        value={metricOptions.find(o => o.value === field.value) || null}
+                                        onChange={(val) => field.onChange(val?.value || '')}
+                                        className="mt-1 text-sm"
+                                    />
+                                )}
                             />
                         </div>
 
@@ -125,7 +125,7 @@ function ReportItems({
             {/* ADD ITEM */}
             <button
                 type="button"
-                onClick={() => append({ content: '', value: '' })}
+                onClick={() => append({ noteId: '', value: '' })}
                 className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm text-gray-600 hover:border-indigo-400"
             >
                 <PlusCircle size={18} />

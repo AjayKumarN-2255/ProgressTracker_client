@@ -3,11 +3,11 @@ import useManageReport from '../hooks/useMangeReport';
 import { formatDateReadable } from '../../../utils/dateFormatter';
 import useFilter from '../hooks/useFilter';
 import useFetch from '../../../hooks/useFetch';
-import DateFilter from './DateFilter';
+import DateFilter from './filter/DateFilter';
 import { Loader, Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import UserSelector from './UserSelector';
-import ProjectSelector from './ProjectSelector';
+import UserSelector from './filter/UserSelector';
+import ProjectSelector from './filter/ProjectSelector';
 import ExportReport from './ExportReport';
 
 export default function ReportList({ currentUserId, userRole }) {
@@ -98,7 +98,7 @@ export default function ReportList({ currentUserId, userRole }) {
         const totalScore = sumMilestones + (sumPatterns + sumMemos);
 
         const maxRows = Math.max(milestones.length, patternsToAddress.length, memos.length, 5);
-        const getCell = (arr, index) => arr[index] || { content: '', value: '' };
+        const getCell = (arr, index) => arr[index] || { noteId: { text: '' }, value: '' };
 
         return (
           <div key={_id} className="flex flex-col lg:flex-row gap-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
@@ -196,7 +196,7 @@ export default function ReportList({ currentUserId, userRole }) {
                       <tr key={idx} className="group hover:bg-gray-50 transition-colors">
                         {/* Milestone Columns */}
                         <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white align-middle">
-                          {m.content}
+                          {m.noteId.text}
                         </td>
                         <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white text-center align-middle font-medium bg-gray-50/50">
                           {m.value}
@@ -204,7 +204,7 @@ export default function ReportList({ currentUserId, userRole }) {
 
                         {/* Pattern Columns */}
                         <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white align-middle">
-                          {p.content}
+                          {p.noteId.text}
                         </td>
                         <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white text-center align-middle font-medium bg-gray-50/50">
                           {p.value}
@@ -212,7 +212,7 @@ export default function ReportList({ currentUserId, userRole }) {
 
                         {/* Memo Columns */}
                         <td className="py-2 px-3 h-12 border-b border-gray-200 border-r-8 border-r-white align-middle">
-                          {memo.content}
+                          {memo.noteId.text}
                         </td>
                         <td className="py-2 px-3 h-12 border-b-[.2px] border-gray-200 text-center align-middle font-medium bg-gray-50/50">
                           {memo.value}
