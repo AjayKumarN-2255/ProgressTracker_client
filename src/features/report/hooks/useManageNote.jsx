@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addNote } from '../../../services/noteService';
+import { addNote, deleteNote } from '../../../services/noteService';
 import toast from "react-hot-toast";
 
 export default function useManageNote(type) {
@@ -27,12 +27,12 @@ export default function useManageNote(type) {
 
     const handleDeleteNote = async (nId, setNotes) => {
         try {
-            const res = await de(payLoad);
-            console.log(res)
+            const res = await deleteNote(nId);
             if (res.success) {
-                toast.success(`${type} added successfully!`);
-                setNotes((notes) => [...notes, res.data]);
-                setNewNote('')
+                toast.success(`${type} note deleted successfully!`);
+                setNotes((notes) =>
+                    notes.filter((note) => note._id !== nId)
+                );
             }
         } catch (err) {
             console.error("Failed to add report:", err);
@@ -44,6 +44,7 @@ export default function useManageNote(type) {
     return {
         newNote,
         setNewNote,
-        handleAddNote
+        handleAddNote,
+        handleDeleteNote
     }
 }

@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { Trash2, PlusCircle, Tag, Plus } from 'lucide-react';
 import useFetch from '../../../hooks/useFetch';
 import useManageNote from '../hooks/useManageNote';
-// import { CustomOptions } from './filter/CustomOption';
+import { CustomOptions } from './filter/CustomOption';
 
 function ReportItems({
     fieldName,
@@ -19,7 +19,7 @@ function ReportItems({
     });
 
     /* NOTE MANAGEMENT */
-    const { newNote, setNewNote, handleAddNote, } = useManageNote(type);
+    const { newNote, setNewNote, handleAddNote, handleDeleteNote } = useManageNote(type);
 
     /* FIELD ARRAY */
     const { fields, append, remove } = useFieldArray({
@@ -81,8 +81,11 @@ function ReportItems({
                                         options={noteOptions}
                                         isClearable
                                         value={noteOptions.find(o => o.value === field.value) || null}
+                                        components={{ Option: CustomOptions }}
                                         onChange={(val) => field.onChange(val?.value || '')}
                                         className="mt-1 text-sm"
+                                        handleDeleteNote={handleDeleteNote}
+                                        setNotes={setNotes}
                                     />
                                 )}
                             />

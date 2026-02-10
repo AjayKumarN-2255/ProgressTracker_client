@@ -6,7 +6,7 @@ export const addNote = async (payLoad) => {
 };
 
 export const deleteNote = async (nId) => {
-    const response = await api.post(`/note/${nId}`);
+    const response = await api.delete(`/note/${nId}`);
     return response.data;
 };
 

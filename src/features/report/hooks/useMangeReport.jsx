@@ -140,6 +140,7 @@ export default function useManageReport(options) {
             const fileName = generateFileName(header) || "Report.xlsx";
             downloadBlob(blob, fileName);
         } catch (err) {
+            console.log(err)
             toast.error(err.response?.data?.message || "Failed to download Reports");
         }
     }
