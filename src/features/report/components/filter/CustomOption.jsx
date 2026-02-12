@@ -2,7 +2,6 @@
 import { components } from "react-select";
 
 export const CustomOptions = (props) => {
-    console.log("this is props", props)
     return (
         <components.Option {...props}>
             <div className="flex justify-between">

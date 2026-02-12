@@ -1,4 +1,4 @@
-import { useState } from "react";
+import useManageGraph from "../../hooks/useManageGraph";
 import MonthGraph from "./MonthGraph";
 import YearGraph from "./YearGraph";
 
@@ -7,14 +7,11 @@ const months = [
     "July", "August", "September", "October", "November", "December"
 ];
 
-function GraphContainer() {
-    const currentYear = new Date().getFullYear();
+function GraphContainer({ userId }) {
 
-    const [view, setView] = useState("monthly");
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth()); 
-    const [selectedYear, setSelectedYear] = useState(currentYear);
-
-    const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+    const { view, setView, years,
+        selectedMonth, setSelectedMonth,
+        selectedYear, setSelectedYear, graphData } = useManageGraph(userId);
 
     return (
         <div className="w-full mx-auto p-6">
@@ -24,8 +21,8 @@ function GraphContainer() {
                     <button
                         onClick={() => setView("monthly")}
                         className={`px-5 py-2 rounded-lg font-medium shadow-lg transition-all text-sm ${view === "monthly"
-                                ? "bg-indigo-600 text-white shadow-indigo-600/30 hover:bg-indigo-700"
-                                : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                            ? "bg-indigo-600 text-white shadow-indigo-600/30 hover:bg-indigo-700"
+                            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
                             }`}
                     >
                         Monthly
@@ -34,8 +31,8 @@ function GraphContainer() {
                     <button
                         onClick={() => setView("yearly")}
                         className={`px-5 py-2 rounded-lg font-medium shadow-lg transition-all text-sm ${view === "yearly"
-                                ? "bg-indigo-600 text-white shadow-indigo-600/30 hover:bg-indigo-700"
-                                : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
+                            ? "bg-indigo-600 text-white shadow-indigo-600/30 hover:bg-indigo-700"
+                            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"
                             }`}
                     >
                         Yearly
@@ -96,9 +93,9 @@ function GraphContainer() {
 
                 <div className="w-full h-[500px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-lg">
                     {view === "monthly" ? (
-                        <MonthGraph selectedMonth={selectedMonth} selectedYear={selectedYear} />
+                        <MonthGraph graphData={graphData} />
                     ) : (
-                        <YearGraph selectedYear={selectedYear} />
+                        <YearGraph graphData={graphData} />
                     )}
                 </div>
             </div>

@@ -12,7 +12,12 @@ function Sidebar() {
             name: 'Report list',
             path: '/employee/dashboard',
             icon: DashIcon
-        }
+        },
+        {
+            name: 'Performance Graph',
+            path: '/employee/performance-graph',
+            icon: DashIcon
+        },
     ]
 
     return (

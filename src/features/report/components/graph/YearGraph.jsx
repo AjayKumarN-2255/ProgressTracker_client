@@ -1,9 +1,10 @@
 import React from 'react'
 
-function YearGraph({ selectedYear }) {
+function YearGraph({ graphData }) {
   return (
     <div className='w-full h-full'>
-      selectedYear-{selectedYear}
+      this is graph data
+      {JSON.stringify(graphData)}
     </div>
   )
 }

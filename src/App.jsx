@@ -44,6 +44,7 @@ function App() {
           children: [
             { path: 'dashboard', element: <EmployeeDashboard /> },
             { path: 'edit-account', element: <EditUser /> },
+            { path: 'performance-graph', element: <GraphPage /> }
           ]
         }
       ]

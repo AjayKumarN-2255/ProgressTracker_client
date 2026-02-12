@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-function MonthGraph({ selectedMonth, selectedYear }) {
+function MonthGraph({ graphData }) {
   return (
     <div className='w-full h-full'>
-      selectedmonth-{selectedMonth}
-      selectedYear-{selectedYear}
+      this is graph data
+      {JSON.stringify(graphData)}
     </div>
   )
 }
