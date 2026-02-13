@@ -9,7 +9,7 @@ export default function useManageGraph(userId) {
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
     const [selectedYear, setSelectedYear] = useState(currentYear);
     const [cuId, setcuId] = useState(userId);
-    const [graphData, setgraphData] = useState(null);
+    const [graphData, setgraphData] = useState([]);
 
     const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 
@@ -48,6 +48,6 @@ export default function useManageGraph(userId) {
         setSelectedYear,
         cuId,
         setcuId,
-        graphData,        
+        graphData,
     };
 }

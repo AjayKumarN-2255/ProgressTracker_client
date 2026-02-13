@@ -91,7 +91,7 @@ function GraphContainer({ userId }) {
                     {view === "monthly" ? "Monthly Performance" : "Yearly Performance"}
                 </h2>
 
-                <div className="w-full h-[500px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-lg">
+                <div className="w-full h-[550px] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 text-lg">
                     {view === "monthly" ? (
                         <MonthGraph graphData={graphData} />
                     ) : (

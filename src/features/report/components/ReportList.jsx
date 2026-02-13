@@ -10,6 +10,12 @@ import UserSelector from './filter/UserSelector';
 import ProjectSelector from './filter/ProjectSelector';
 import ExportReport from './ExportReport';
 
+const average = (arr) => {
+  if (!arr || arr.length === 0) return 0;
+  const sum = arr.reduce((total, item) => total + (item.value || 0), 0);
+  return sum / arr.length;
+};
+
 export default function ReportList({ currentUserId, userRole }) {
 
   const { filterType, filterValue, filterYear, applyProjectFilter,
@@ -91,11 +97,11 @@ export default function ReportList({ currentUserId, userRole }) {
       ) : reports.map((report, ind) => {
         const { _id, projectId, reviewMonth, reviewerId, employeeId, milestones, patternsToAddress, memos } = report;
 
-        const sumMilestones = milestones.reduce((sum, item) => sum + (item.value || 0), 0);
-        const sumPatterns = patternsToAddress.reduce((sum, item) => sum + (item.value || 0), 0);
-        const sumMemos = memos.reduce((sum, item) => sum + (item.value || 0), 0);
+        const avgMilestones = average(milestones);
+        const avgPatterns = average(patternsToAddress);
+        const avgMemos = average(memos);
 
-        const totalScore = sumMilestones + (sumPatterns + sumMemos);
+        const totalScore = avgMilestones + (avgPatterns + avgMemos);
 
         const maxRows = Math.max(milestones.length, patternsToAddress.length, memos.length, 5);
         const getCell = (arr, index) => arr[index] || { noteId: { text: '' }, value: '' };
@@ -224,14 +230,14 @@ export default function ReportList({ currentUserId, userRole }) {
 
                 <tfoot>
                   <tr className="font-bold text-gray-700 bg-gray-50">
-                    <td className="py-4 px-3 text-right border-r-8 border-white">Total</td>
-                    <td className="py-4 px-3 text-center border-r-8 border-white">{sumMilestones}</td>
+                    <td className="py-4 px-3 text-right border-r-8 border-white">Average</td>
+                    <td className="py-4 px-3 text-center border-r-8 border-white">{avgMilestones}</td>
 
-                    <td className="py-4 px-3 text-right border-r-8 border-white">Total</td>
-                    <td className="py-4 px-3 text-center border-r-8 border-white">{sumPatterns}</td>
+                    <td className="py-4 px-3 text-right border-r-8 border-white">Average</td>
+                    <td className="py-4 px-3 text-center border-r-8 border-white">{avgPatterns}</td>
 
-                    <td className="py-4 px-3 text-right border-r-8 border-white">Total</td>
-                    <td className="py-4 px-3 text-center">{sumMemos}</td>
+                    <td className="py-4 px-3 text-right border-r-8 border-white">Average</td>
+                    <td className="py-4 px-3 text-center">{avgMemos}</td>
                   </tr>
                 </tfoot>
               </table>

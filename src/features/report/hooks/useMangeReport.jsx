@@ -91,12 +91,12 @@ export default function useManageReport(options) {
             const res = await editReport(rId, payLoad);
             if (res.success) {
                 console.log(res.data);
-                toast.success("Report added successfully!");
+                toast.success("Report Edited successfully!");
                 navigate('/admin/dashboard');
             }
         } catch (err) {
             console.error("Failed to add report:", err);
-            const message = err?.response?.data?.message || err?.message || "Failed to add report";
+            const message = err?.response?.data?.message || err?.message || "Failed to Edit report";
             setError(message);
             toast.error(message);
         } finally {
