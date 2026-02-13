@@ -9,6 +9,7 @@ export default function useManageGraph(userId) {
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
     const [selectedYear, setSelectedYear] = useState(currentYear);
     const [cuId, setcuId] = useState(userId);
+    const [pId, setPId] = useState(null);
     const [graphData, setgraphData] = useState([]);
 
     const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -20,7 +21,8 @@ export default function useManageGraph(userId) {
                 const res = await getUserAnalytics(
                     cuId,
                     view === "monthly" ? selectedMonth : undefined,
-                    selectedYear
+                    selectedYear,
+                    view === "project" ? pId : undefined
                 );
 
                 if (res.success) {
@@ -36,7 +38,7 @@ export default function useManageGraph(userId) {
         };
         if (!cuId) return;
         fetchGraphData();
-    }, [cuId, view, selectedMonth, selectedYear]);
+    }, [cuId, view, pId, selectedMonth, selectedYear]);
 
     return {
         view,
@@ -48,6 +50,8 @@ export default function useManageGraph(userId) {
         setSelectedYear,
         cuId,
         setcuId,
+        pId,
+        setPId,
         graphData,
     };
 }

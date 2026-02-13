@@ -2,6 +2,7 @@ import useManageGraph from "../../hooks/useManageGraph";
 import useFetch from "../../../../hooks/useFetch";
 import MonthGraph from "./MonthGraph";
 import YearGraph from "./YearGraph";
+import ProjectGraph from "./ProjectGraph";
 
 const months = [
     "January", "February", "March", "April", "May", "June",
@@ -19,10 +20,13 @@ function GraphContainer({ userId }) {
         setSelectedYear,
         graphData,
         cuId,
-        setcuId
+        setcuId,
+        pId,
+        setPId
     } = useManageGraph(userId);
 
-    const { data: users } = useFetch('/user', { params: { role: 'employee' } });
+    const { data: users } = useFetch('/user', { params: { role: 'employee' }, enabled: !userId });
+    const { data: projects } = useFetch('/project', { params: { role: 'employee' }, enabled: view === "project" });
 
     return (
         <div className="w-full max-w-7xl mx-auto p-4 sm:p-6">
@@ -44,22 +48,20 @@ function GraphContainer({ userId }) {
                             ))}
                         </select>
                     )}
-
-                    {/* <select
-                        value={selectedProject || ""}
-                        onChange={(e) => setSelectedProject(e.target.value)}
-                        className="w-full sm:w-[220px] px-4 py-2 border rounded-lg text-gray-700"
-                        disabled={!projects.length}
-                    >
-                        <option value="" disabled>Select Project</option>
-                        {projects.map((p) => (
-                            <option key={p._id} value={p._id}>{p.name}</option>
-                        ))}
-                    </select> */}
                 </div>
 
                 {/* ➡️ Monthly / Yearly Toggle */}
                 <div className="flex gap-3 w-full md:w-auto">
+                    <button
+                        onClick={() => setView("project")}
+                        className={`flex-1 md:flex-none px-5 py-2 rounded-lg font-medium text-sm transition-all ${view === "project"
+                            ? "bg-indigo-600 text-white"
+                            : "bg-white text-gray-700 border border-gray-300"
+                            }`}
+                    >
+                        Project Wise
+                    </button>
+
                     <button
                         onClick={() => setView("monthly")}
                         className={`flex-1 md:flex-none px-5 py-2 rounded-lg font-medium text-sm transition-all ${view === "monthly"
@@ -108,6 +110,22 @@ function GraphContainer({ userId }) {
                     </>
                 )}
 
+                {
+                    view === "project" && (
+                        <select
+                            value={pId || ""}
+                            onChange={(e) => setPId(e.target.value)}
+                            className="w-full sm:w-[220px] px-4 py-2 border rounded-lg text-gray-700"
+                            disabled={!projects.length}
+                        >
+                            <option value="" disabled>Select Project</option>
+                            {projects.map((p) => (
+                                <option key={p._id} value={p._id}>{p.name}</option>
+                            ))}
+                        </select>
+                    )
+                }
+
                 {view === "yearly" && (
                     <select
                         value={selectedYear}
@@ -124,15 +142,17 @@ function GraphContainer({ userId }) {
             {/* 📊 Chart Section */}
             <div className="w-full">
                 <h2 className="text-2xl font-semibold mb-4 text-center">
-                    {view === "monthly" ? "Monthly Performance" : "Yearly Performance"}
+                    {view === "monthly" ? "Monthly Performance" : view === "yearly" ? "Yearly Performance" : "Project Performance"}
                 </h2>
 
-                <div className="w-full min-h-[400px] md:h-[550px] border-2 border-dashed border-gray-300 rounded-lg">
+                <div className="w-full h-[400px] md:h-[550px] border-2 border-dashed border-gray-300 rounded-lg">
                     {graphData?.length > 0 ? (
                         view === "monthly" ? (
                             <MonthGraph graphData={graphData} />
-                        ) : (
+                        ) : view === "yearly" ? (
                             <YearGraph graphData={graphData} />
+                        ) : (
+                            <ProjectGraph graphData={graphData} />
                         )
                     ) : !userId && !cuId ? (
                         <div className="flex items-center justify-center h-full text-gray-400 text-sm font-medium">
@@ -149,6 +169,7 @@ function GraphContainer({ userId }) {
                         </div>
                     )}
                 </div>
+
             </div>
         </div>
     );
