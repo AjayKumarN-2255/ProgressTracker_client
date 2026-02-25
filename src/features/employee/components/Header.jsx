@@ -21,12 +21,19 @@ function Header() {
           <div className="flex items-center gap-2">
             <span className="text-gray-700 font-medium">{user?.name}</span>
             <Link to="/employee/edit-account">
-              <div
-                className={`w-10 h-10 rounded-full ${avatarColor} text-white flex items-center justify-center font-semibold text-lg 
-                  cursor-pointer border-2 border-gray-300`}
-              >
-                {user?.name ? user.name[0].toUpperCase() : "U"}
-              </div>
+                {user?.profile ? (
+                  <img
+                    src={`${import.meta.env.VITE_SERVER_URL}${user.profile}`}
+                    alt="profile"
+                    className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer object-cover"
+                  />
+                ) : (
+                  <div
+                    className={`w-10 h-10 rounded-full ${avatarColor} text-white flex items-center justify-center font-semibold text-lg cursor-pointer border-2 border-gray-300`}
+                  >
+                    {user?.name ? user.name[0].toUpperCase() : "U"}
+                  </div>
+                )}
             </Link>
           </div>
           <button

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import EditProfileImage from "./EditProfileImage";
 import useManageUser from "../hooks/useManageUser";
 
 function EditAccountForm() {
@@ -25,6 +26,7 @@ function EditAccountForm() {
 
     return (
         <div className="border-2 border-gray-100 flex flex-col gap-2 rounded-lg w-full max-w-xl p-6">
+            <EditProfileImage />
             <div className='border-2 border-gray-100  rounded-lg w-full max-w-xl p-6 bg-white'>
                 <form className='flex flex-col gap-10'
                     onSubmit={handleSubmit(onSubmit)}>
