@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import UserSelector from './filter/UserSelector';
 import ProjectSelector from './filter/ProjectSelector';
 import ExportReport from './ExportReport';
+import { useSelector } from 'react-redux';
 
 const average = (arr) => {
   if (!arr || arr.length === 0) return 0;
@@ -30,6 +31,7 @@ export default function ReportList({ currentUserId, userRole }) {
   });
 
   const { data: reports, loading, handleExportReport } = useManageReport({ userId });
+  const { user } = useSelector((state => state.auth));
   const { data: projects } = useFetch('/project');
   const navigate = useNavigate();
 
@@ -115,7 +117,7 @@ export default function ReportList({ currentUserId, userRole }) {
                   <p className="text-sm text-gray-500 font-medium mb-1">
                     Project {(ind + 1).toString().padStart(2, '0')}
                   </p>
-                  {userRole !== "employee" &&
+                  {userRole !== "employee" && reviewerId._id == user?._id &&
                     <button
                       onClick={() => navigate(`/${userRole}/edit-report/${_id}`)}
                       className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800"
