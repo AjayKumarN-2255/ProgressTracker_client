@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { addUser } from '../../../services/userService';
 import { editAccount, editProfileImage } from "../../../services/authService";
+import { addDesignation, deleteDesignation } from "../../../services/desgnService";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from '../../../store/slices/authSlice';
 import { useState } from "react";
@@ -97,6 +98,40 @@ export default function useManageUser() {
         setImagefile(null);
     };
 
+    const handleAddDesignation = async (payLoad, setData) => {
+        if (!payLoad.name || !payLoad.role) {
+            toast.error("enter details");
+            return;
+        }
+        try {
+            const res = await addDesignation(payLoad);
+            if (res.success) {
+                setData(prev => [...prev, res.data]);
+                toast.success("Designation added");
+            }
+        } catch (err) {
+            const message = err?.response?.data?.message || "Failed to add Designation";
+            toast.error(message);
+        }
+    }
+
+    const handleDeleteDesgn = async (dId, setData) => {
+        if (!dId) {
+            toast.error("Invalid designation");
+            return;
+        }
+
+        try {
+            const res = await deleteDesignation(dId);
+            if (res.success) {
+                setData(prev => prev.filter(each => each._id !== dId));
+                toast.success("Designation deleted");
+            }
+        } catch (err) {
+            const message = err?.response?.data?.message || "Failed to delete designation";
+            toast.error(message);
+        }
+    };
 
     return {
         handleAddUser,
@@ -104,9 +139,11 @@ export default function useManageUser() {
         handleChange,
         handleImageUpload,
         handleRemoveImage,
+        handleAddDesignation,
+        handleDeleteDesgn,
         loading,
         clicked,
         error,
-        image
+        image,
     };
 }

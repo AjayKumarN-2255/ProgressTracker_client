@@ -37,17 +37,17 @@ export const toDateValidation = {
 };
 
 export const nameValidation = {
-    required: "Project name is required",
+    required: "Name is required",
     minLength: {
         value: 3,
-        message: "Project name must be at least 3 characters",
+        message: "Name must be at least 3 characters",
     },
     maxLength: {
         value: 50,
-        message: "Project name cannot exceed 50 characters",
+        message: "Namecannot exceed 50 characters",
     },
     pattern: {
         value: /^[a-zA-Z0-9\s]+$/,
-        message: "Project name can only contain letters, numbers and spaces",
+        message: "Name can only contain letters, numbers and spaces",
     },
 };
