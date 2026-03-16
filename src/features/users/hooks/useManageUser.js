@@ -17,6 +17,7 @@ export default function useManageUser() {
     const [clicked, setClicked] = useState(false);
 
     const handleAddUser = async (payLoad) => {
+        delete payLoad.newDesignation;
         try {
             setLoading(true);
             setError(null);
