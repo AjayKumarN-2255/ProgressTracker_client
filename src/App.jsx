@@ -13,6 +13,7 @@ import Page404 from './components/Page404';
 import AddProject from './features/project/pages/AddProject';
 import AddReport from './features/report/pages/AddReport';
 import EditReport from './features/report/pages/EditReport';
+import EditAccount from './features/users/pages/EditAccount';
 import EditUser from './features/users/pages/EditUser';
 
 import AssignReviewer from './features/review/pages/AssignReviewer';
@@ -44,7 +45,7 @@ function App() {
           element: <UserLayout />,   // layout wraps all employee pages
           children: [
             { path: 'dashboard', element: <EmployeeDashboard /> },
-            { path: 'edit-account', element: <EditUser /> },
+            { path: 'edit-account', element: <EditAccount /> },
             { path: 'performance-graph', element: <GraphPage /> }
           ]
         }
@@ -66,7 +67,7 @@ function App() {
             { path: 'assigned-reviews', element: <AssginedReviews /> },
             { path: 'edit-review/:id', element: <EditReviewForm /> },
             { path: 'performance-graph', element: <GraphPage /> },
-            { path: 'edit-account', element: <EditUser /> },
+            { path: 'edit-account', element: <EditAccount /> },
           ]
         }
       ]
@@ -85,7 +86,8 @@ function App() {
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'performance-graph', element: <GraphPage /> },
-            { path: 'edit-account', element: <EditUser /> },
+            { path: 'edit-account', element: <EditAccount /> },
+            { path: 'edit-user/:id', element: <EditUser /> },
           ]
         }
       ]

@@ -1,10 +1,10 @@
 import React from 'react';
-import EditAccountForm from '../components/EditAccoutForm';
+import EditUserForm from '../components/EditUserForm';
 
 function EditUser() {
     return (
         <div className='w-full h-full items-start flex justify-center'>
-            <EditAccountForm />
+            <EditUserForm />
         </div>
     )
 }

@@ -4,10 +4,10 @@ import Card from './Card';
 
 function UserList() {
 
-    const { role, handleToggle, loading, users } = useAdminUser();
+    const { role, handleToggle, loading, users } = useAdminUser(true);
 
     return (
-        <div className='w-full'>
+        <div className='w-full flex flex-col gap-6'>
             <div className="flex gap-2 mb-4">
                 <button
                     onClick={() => handleToggle('admin')}

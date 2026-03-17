@@ -31,7 +31,7 @@ function Card({ user, onDelete }) {
 
                 {open && (
                     <div className="absolute right-0 mt-2 w-28 bg-white border rounded-md shadow-lg z-10">
-                        <Link to={'test'}
+                        <Link to={`/superadmin/edit-user/${user?._id}`}
                             className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                         >
                             Edit

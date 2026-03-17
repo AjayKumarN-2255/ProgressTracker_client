@@ -3,7 +3,6 @@ import api from "../services/api";
 
 export default function useFetch(url, options = {}) {
     const { enabled = true, ...requestOptions } = options;
-
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
