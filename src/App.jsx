@@ -7,6 +7,7 @@ import LoginPage from './features/auth/pages/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AddEmployee from './features/users/pages/AddEmployee';
 import AddAdmin from './features/users/pages/AddAdmin';
+import ManageUsers from './features/users/pages/ManageUsers';
 import Page404 from './components/Page404';
 
 import AddProject from './features/project/pages/AddProject';
@@ -80,6 +81,7 @@ function App() {
             { path: 'dashboard', element: <SuperDashboard /> },
             { path: 'add-admin', element: <AddAdmin /> },
             { path: 'add-employee', element: <AddEmployee /> },
+            { path: 'users', element: <ManageUsers /> },
             { path: 'add-project', element: <AddProject /> },
             { path: 'add-review', element: <AssignReviewer /> },
             { path: 'performance-graph', element: <GraphPage /> },

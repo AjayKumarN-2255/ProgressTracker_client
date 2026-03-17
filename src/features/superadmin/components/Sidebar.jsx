@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import DashIcon from '/home_icon.svg';
 import AddIcon from '/add_icon.svg';
+import EditIcon from '/edit_icon.svg';
 
 
 function Sidebar() {
@@ -29,6 +30,11 @@ function Sidebar() {
             icon: AddIcon
         },
         {
+            name: 'Manage User',
+            path: '/superadmin/users',
+            icon: EditIcon
+        },
+        {
             name: 'Add Project',
             path: '/superadmin/add-project',
             icon: AddIcon
@@ -37,7 +43,7 @@ function Sidebar() {
             name: 'Assign Reviewer',
             path: '/superadmin/add-review',
             icon: AddIcon
-        }
+        },
     ]
 
     return (
