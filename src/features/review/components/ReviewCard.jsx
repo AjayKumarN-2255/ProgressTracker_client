@@ -99,7 +99,7 @@ export default function ReviewCard({ review, handleShowModal }) {
                 {/* Avatar */}
                 <div className="flex-shrink-0">
                     <div className="h-12 w-12 rounded-full bg-indigo-50 text-indigo-600 font-bold flex items-center justify-center text-lg border border-indigo-100">
-                        {review.employee.name.charAt(0).toUpperCase()}
+                        {review?.employee?.name?.charAt(0)?.toUpperCase()}
                     </div>
                 </div>
 
@@ -108,19 +108,19 @@ export default function ReviewCard({ review, handleShowModal }) {
                     {/* Employee */}
                     <div className="lg:col-span-3">
                         <span className="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wide">Employee</span>
-                        <p className="text-sm md:text-base font-medium text-gray-900 mt-0.5">{review.employee.name}</p>
+                        <p className="text-sm md:text-base font-medium text-gray-900 mt-0.5">{review?.employee?.name}</p>
                     </div>
 
                     {/* Project */}
                     <div className="lg:col-span-4">
                         <span className="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wide">Project</span>
-                        <p className="text-sm md:text-base font-medium text-gray-900 mt-0.5">{review.project.name}</p>
+                        <p className="text-sm md:text-base font-medium text-gray-900 mt-0.5">{review?.project?.name}</p>
                     </div>
 
                     {/* Reviewer */}
                     <div className="lg:col-span-3">
                         <span className="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wide">Reviewer</span>
-                        <p className="text-sm md:text-base text-gray-700 mt-0.5">{review.reviewer.name}</p>
+                        <p className="text-sm md:text-base text-gray-700 mt-0.5">{review?.reviewer?.name}</p>
                     </div>
 
                     {/* Review Month / Period */}
@@ -139,7 +139,7 @@ export default function ReviewCard({ review, handleShowModal }) {
                     {/* Status badge */}
                     <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs md:text-sm font-medium border ${bg} ${text} ${border}`}>
                         <span className={`w-2 h-2 rounded-full ${dot}`}></span>
-                        <span className="capitalize">{review.status}</span>
+                        <span className="capitalize">{review?.status}</span>
                     </div>
 
                     {/* Add Report button (hidden if completed) */}

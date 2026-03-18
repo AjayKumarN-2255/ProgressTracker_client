@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { getAvatarColor } from '../../../utils/generateAvatarColor';
 import { Link } from 'react-router-dom';
 
-function Card({ user, onDelete }) {
+function Card({ user, handleModal }) {
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
 
@@ -38,8 +38,7 @@ function Card({ user, onDelete }) {
                         </Link>
                         <button
                             onClick={() => {
-                                onDelete?.(user);
-                                setOpen(false);
+                                handleModal(user?.name, user?._id)
                             }}
                             className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
                         >

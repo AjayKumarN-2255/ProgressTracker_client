@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUsers, editAccount } from '../../../services/userService';
+import { getUsers, editAccount, deleteUser } from '../../../services/userService';
 import { getDesignation } from '../../../services/desgnService';
 import useFetch from "../../../hooks/useFetch";
 import toast from "react-hot-toast";
@@ -11,6 +11,7 @@ export default function useAdminUser(needFetch = false, id) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [designations, setDesgns] = useState([]);
+    const [show, setShow] = useState(null);
 
     const navigate = useNavigate();
 
@@ -72,7 +73,6 @@ export default function useAdminUser(needFetch = false, id) {
     }, [role, needFetch]);
 
     const handleEditAccount = async (userId, payLoad) => {
-
         try {
             const res = await editAccount(userId, payLoad)
             if (res.success) {
@@ -84,9 +84,25 @@ export default function useAdminUser(needFetch = false, id) {
         }
     }
 
+    const handleDeleteUser = async (userId) => {
+        try {
+            const res = await deleteUser(userId)
+            if (res.success) {
+                setUsers((prev) => {
+                    return prev.filter((each) => each._id != userId)
+                });
+            }
+            toast.success("user deleted successfully");
+        } catch (err) {
+            const message = err?.response?.data?.message || "Failed to delete user";
+            toast.error(message);
+        }
+    }
+
     return {
         designations, loading, users, user,
-        role, setRole, handleToggle, handleEditAccount
+        role, setRole, handleToggle, handleEditAccount,
+        handleDeleteUser, show, setShow
     }
 
 }
