@@ -11,3 +11,8 @@ export const getUsers = async (role) => {
     });
     return response.data;
 }
+
+export const editAccount = async (userId, payload) => {
+    const response = await api.patch(`/user/${userId}`, payload);
+    return response.data;
+};

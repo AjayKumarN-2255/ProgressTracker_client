@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getUsers } from '../../../services/userService';
+import { getUsers, editAccount } from '../../../services/userService';
 import { getDesignation } from '../../../services/desgnService';
 import useFetch from "../../../hooks/useFetch";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function useAdminUser(needFetch = false, id) {
 
@@ -10,6 +11,8 @@ export default function useAdminUser(needFetch = false, id) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [designations, setDesgns] = useState([]);
+
+    const navigate = useNavigate();
 
     const enabled = !!id;
     const { data: user } = useFetch('/user', {
@@ -66,11 +69,24 @@ export default function useAdminUser(needFetch = false, id) {
 
         handleGetUsers();
 
-    }, [role, needFetch])
+    }, [role, needFetch]);
+
+    const handleEditAccount = async (userId, payLoad) => {
+
+        try {
+            const res = await editAccount(userId, payLoad)
+            if (res.success) {
+                navigate('/superadmin/users')
+            }
+        } catch (err) {
+            const message = err?.response?.data?.message || "Failed to update user";
+            toast.error(message);
+        }
+    }
 
     return {
         designations, loading, users, user,
-        role, setRole, handleToggle,
+        role, setRole, handleToggle, handleEditAccount
     }
 
 }

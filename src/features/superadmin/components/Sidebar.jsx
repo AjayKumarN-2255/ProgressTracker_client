@@ -32,7 +32,7 @@ function Sidebar() {
         {
             name: 'Manage User',
             path: '/superadmin/users',
-            icon: EditIcon
+            icon: DashIcon
         },
         {
             name: 'Add Project',

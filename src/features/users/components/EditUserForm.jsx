@@ -7,20 +7,20 @@ function EditUserForm() {
 
   const { register, handleSubmit, reset } = useForm();
   const { id } = useParams();
-  const { loading, error, handleAccount, user, designations } = useAdminUser(false, id);
+  const { loading, error, handleEditAccount, user, designations } = useAdminUser(false, id);
   const onSubmit = (formData) => {
-    handleAccount({ ...formData, userId: user?._id }, reset);
+    handleEditAccount(id, formData);
   };
 
   useEffect(() => {
     if (user) {
       reset({
-        username: user.name || "",
+        name: user.name || "",
         email: user.email || "",
         designation: user.designation?.trim() || ""
       });
     }
-  }, [user,designations, reset]);
+  }, [user, designations, reset]);
 
   return (
     <div className="border-2 border-gray-100 flex flex-col gap-2 rounded-lg w-full max-w-xl p-6">
@@ -33,7 +33,7 @@ function EditUserForm() {
               <label className="text-gray-700 font-medium max-w-28 w-full">Name:</label>
               <input
                 type="text"
-                {...register("username")}
+                {...register("name")}
                 className="border flex-1 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -55,8 +55,6 @@ function EditUserForm() {
               className="border flex-1 border-gray-300 rounded-md px-3 py-2 
                          focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="">Select Designation</option>
-
               {designations?.map((desgn) => (
                 <option key={desgn._id} value={desgn.name.trim()}>
                   {desgn.name}
